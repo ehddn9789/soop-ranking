@@ -16,70 +16,100 @@ const POST_URL = `https://www.sooplive.com/station/${BJ_ID}/post/${POST_ID}`;
 let previousRanks = {};
 let previousLikes = {};
 
-app.get("/api/ranking", async (req, res) => {
-  try {
-    const firstUrl =
-      `https://api-channel.sooplive.com/v1.1/channel/${BJ_ID}/post/${POST_ID}/comment?page=1&perPage=30`;
+let cachedRanking = [];
+let cachedAt = 0;
+let isFetching = false;
 
-    const firstResponse = await axios.get(firstUrl);
+const CACHE_TIME = 10000; // 10초 캐싱
 
-    const lastPage = firstResponse.data.meta.lastPage;
-    let allComments = [...firstResponse.data.data];
+async function fetchRankingFromSoop() {
+  const firstUrl =
+    `https://api-channel.sooplive.com/v1.1/channel/${BJ_ID}/post/${POST_ID}/comment?page=1&perPage=30`;
 
-    for (let page = 2; page <= lastPage; page++) {
-      const url =
-        `https://api-channel.sooplive.com/v1.1/channel/${BJ_ID}/post/${POST_ID}/comment?page=${page}&perPage=30`;
+  const firstResponse = await axios.get(firstUrl);
 
-      const response = await axios.get(url);
-      allComments.push(...response.data.data);
+  const lastPage = firstResponse.data.meta.lastPage;
+  let allComments = [...firstResponse.data.data];
+
+  for (let page = 2; page <= lastPage; page++) {
+    const url =
+      `https://api-channel.sooplive.com/v1.1/channel/${BJ_ID}/post/${POST_ID}/comment?page=${page}&perPage=30`;
+
+    const response = await axios.get(url);
+    allComments.push(...response.data.data);
+  }
+
+  allComments.sort((a, b) => b.likeCnt - a.likeCnt);
+
+  const ranking = allComments.map((item, index) => {
+    const key = String(item.pCommentNo);
+
+    const newRank = index + 1;
+    const oldRank = previousRanks[key] || newRank;
+    const rankDiff = oldRank - newRank;
+
+    let movement = "same";
+
+    if (rankDiff > 0) {
+      movement = "up";
+    } else if (rankDiff < 0) {
+      movement = "down";
     }
 
-    allComments.sort((a, b) => b.likeCnt - a.likeCnt);
-    console.log(allComments[0]);
+    const oldLike = previousLikes[key] ?? item.likeCnt;
+    const likeDiff = item.likeCnt - oldLike;
 
-    const ranking = allComments.map((item, index) => {
-      const key = String(item.pCommentNo);
+    previousRanks[key] = newRank;
+    previousLikes[key] = item.likeCnt;
 
-      const newRank = index + 1;
-      const oldRank = previousRanks[key] || newRank;
+    return {
+      rank: newRank,
+      nickname: item.userNick,
+      userId: item.userId,
+      profileImage: item.profileImage || "",
+      up: item.likeCnt,
+      likeDiff: likeDiff,
+      rankDiff: Math.abs(rankDiff),
+      movement: movement,
+      comment: item.comment,
+      commentNo: item.pCommentNo,
+      link: `${POST_URL}#comment_noti${item.pCommentNo}`
+    };
+  });
 
-      const rankDiff = oldRank - newRank;
+  return ranking;
+}
 
-      let movement = "same";
+app.get("/api/ranking", async (req, res) => {
+  try {
+    const now = Date.now();
 
-      if (rankDiff > 0) {
-        movement = "up";
-      } else if (rankDiff < 0) {
-        movement = "down";
-      }
+    if (cachedRanking.length > 0 && now - cachedAt < CACHE_TIME) {
+      return res.json(cachedRanking);
+    }
 
-      const oldLike = previousLikes[key] ?? item.likeCnt;
-      const likeDiff = item.likeCnt - oldLike;
+    if (isFetching) {
+      return res.json(cachedRanking);
+    }
 
-      previousRanks[key] = newRank;
-      previousLikes[key] = item.likeCnt;
+    isFetching = true;
 
-      return {
-        rank: newRank,
-        nickname: item.userNick,
-        profileImage: item.profileImage,
-        userId: item.userId,
-        up: item.likeCnt,
-        likeDiff: likeDiff,
-        rankDiff: Math.abs(rankDiff),
-        movement: movement,
-        comment: item.comment,
-        commentNo: item.pCommentNo,
+    const ranking = await fetchRankingFromSoop();
 
-        // SOOP이 댓글 앵커를 지원하지 않을 수도 있음
-        link: `${POST_URL}#comment_noti${item.pCommentNo}`
-      };
-    });
+    cachedRanking = ranking;
+    cachedAt = Date.now();
+    isFetching = false;
 
-    res.json(ranking);
+    res.json(cachedRanking);
 
   } catch (error) {
+    isFetching = false;
+
     console.error(error.message);
+
+    if (cachedRanking.length > 0) {
+      return res.json(cachedRanking);
+    }
 
     res.status(500).json({
       error: "SOOP 댓글 데이터를 불러오지 못했습니다."
