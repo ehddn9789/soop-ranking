@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>챈나룽 지옥 신청 랭킹</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      font-family:
+        "Malgun Gothic",
+        Arial,
+        sans-serif;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          rgba(8,0,0,0.86),
+          rgba(0,0,0,0.96)
+        ),
+
+        repeating-linear-gradient(
+          45deg,
+          #1b0503 0px,
+          #1b0503 20px,
+          #330c06 20px,
+          #330c06 40px
+        );
+
+      padding: 24px;
+    }
+
+    .title-box {
+
+      text-align: center;
+
+      padding: 24px;
+
+      margin-bottom: 24px;
+
+      border: 4px solid #742012;
+
+      border-radius: 24px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #3b0906,
+          #120202
+        );
+
+      box-shadow:
+        0 0 30px rgba(255,45,0,0.85),
+        inset 0 0 15px rgba(255,120,0,0.15);
+    }
+
+    h1 {
+
+      margin: 0;
+
+      font-size: 42px;
+
+      color: #ffb000;
+
+      text-shadow:
+        3px 3px 0 #000,
+        0 0 18px #ff2200;
+    }
+
+    .sub-title {
+
+      margin-top: 10px;
+
+      color: #ffd1b0;
+
+      font-size: 15px;
+    }
+
+    .layout {
+
+      display: grid;
+
+      grid-template-columns: 1fr 50%;
+
+      gap: 24px;
+
+      align-items: start;
+    }
+
+    .left-panel,
+    .ranking-panel {
+
+      background:
+        rgba(18,4,2,0.94);
+
+      border:
+        3px solid #742012;
+
+      border-radius: 24px;
+
+      box-shadow:
+        0 0 20px rgba(255,55,0,0.45),
+        inset 0 0 15px #000;
+
+      padding: 20px;
+    }
+
+    .ranking-panel {
+
+      width: 100%;
+
+      max-height: calc(100vh - 150px);
+
+      overflow-y: auto;
+
+      position: sticky;
+
+      top: 20px;
+    }
+
+    .ranking-panel::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .ranking-panel::-webkit-scrollbar-thumb {
+
+      background: #742012;
+
+      border-radius: 999px;
+    }
+
+    .post-image {
+
+      width: 100%;
+
+      height: auto;
+
+      display: block;
+
+      border:
+        3px solid #8c2a16;
+
+      border-radius: 18px;
+
+      box-shadow:
+        0 0 22px rgba(255,40,0,0.55);
+
+      margin-bottom: 18px;
+
+      background: #111;
+    }
+
+    .summary-box {
+
+      border:
+        2px solid #7a2413;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2b0804,
+          #120202
+        );
+
+      padding: 18px;
+
+      margin-bottom: 18px;
+
+      line-height: 1.7;
+
+      color: #f4d6c8;
+
+      box-shadow:
+        inset 0 0 10px rgba(255,120,0,0.08);
+    }
+
+    .summary-title,
+    .search-title,
+    .ranking-title {
+
+      color: #ffb000;
+
+      font-weight: bold;
+
+      text-shadow:
+        0 0 12px #ff2200;
+    }
+
+    .summary-title {
+
+      font-size: 22px;
+
+      margin-bottom: 10px;
+    }
+
+    .ranking-title {
+
+      font-size: 28px;
+
+      margin-bottom: 16px;
+
+      text-align: center;
+    }
+
+    .search-title {
+
+      font-size: 18px;
+
+      margin-bottom: 10px;
+    }
+
+    .search {
+
+      width: 100%;
+
+      padding: 15px;
+
+      font-size: 16px;
+
+      color: white;
+
+      background: #100302;
+
+      border:
+        2px solid #8c2a16;
+
+      border-radius: 16px;
+
+      outline: none;
+
+      margin-bottom: 12px;
+
+      transition: 0.25s;
+    }
+
+    .search:focus {
+
+      border-color: #ff7b3a;
+
+      box-shadow:
+        0 0 15px rgba(255,90,0,0.4);
+    }
+
+    .search::placeholder {
+
+      color: #aa7a68;
+    }
+
+    .info {
+
+      color: #ffcc77;
+
+      font-size: 14px;
+
+      margin-bottom: 16px;
+    }
+
+    .card {
+
+      display: grid;
+
+      grid-template-columns: 70px 1fr 90px;
+
+      gap: 12px;
+
+      align-items: start;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2a0805,
+          #100202
+        );
+
+      border:
+        2px solid #6b1d12;
+
+      border-radius: 18px;
+
+      margin-bottom: 14px;
+
+      padding: 14px;
+
+      box-shadow:
+        inset 0 0 10px #000,
+        0 0 12px rgba(255,40,0,0.15);
+
+      transition:
+        transform 0.18s,
+        box-shadow 0.18s;
+    }
+
+    .card:hover {
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        inset 0 0 10px #000,
+        0 0 20px rgba(255,60,0,0.4);
+    }
+
+    .top1 {
+
+      border-color: #ffd000;
+
+      box-shadow:
+        0 0 24px #ffcc00;
+    }
+
+    .top2 {
+
+      border-color: #c0c0c0;
+
+      box-shadow:
+        0 0 18px #aaa;
+    }
+
+    .top3 {
+
+      border-color: #cd7f32;
+
+      box-shadow:
+        0 0 18px #cd7f32;
+    }
+
+    .rank {
+
+      color: #ffd000;
+
+      font-size: 22px;
+
+      font-weight: bold;
+
+      text-align: center;
+
+      text-shadow:
+        2px 2px 0 #000;
+    }
+
+    .nick {
+
+      color: #ffefc2;
+
+      font-size: 18px;
+
+      font-weight: bold;
+
+      margin-bottom: 4px;
+    }
+
+    .user-id {
+
+      color: #b98b6b;
+
+      font-size: 13px;
+
+      margin-bottom: 8px;
+    }
+
+    .comment {
+
+      color: #ddd;
+
+      white-space: pre-wrap;
+
+      line-height: 1.45;
+
+      font-size: 14px;
+    }
+
+    .like {
+
+      color: #ff451f;
+
+      font-size: 22px;
+
+      font-weight: bold;
+
+      text-align: center;
+
+      text-shadow:
+        0 0 12px #ff2200;
+    }
+
+    .like-label {
+
+      display: block;
+
+      font-size: 12px;
+
+      color: #ffb08a;
+
+      margin-top: 3px;
+    }
+
+    .empty {
+
+      text-align: center;
+
+      color: #c99;
+
+      padding: 30px;
+    }
+
+    @media (max-width: 950px) {
+
+      .layout {
+
+        grid-template-columns: 1fr;
+      }
+
+      .ranking-panel {
+
+        max-height: none;
+
+        position: static;
+      }
+
+      .card {
+
+        grid-template-columns: 1fr;
+      }
+
+      .rank,
+      .like {
+
+        text-align: left;
+      }
+
+      h1 {
+
+        font-size: 30px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="title-box">
+
+    <h1>🔥 챈나룽 지옥 신청 랭킹 🔥</h1>
+
+    <div class="sub-title">
+      Minecraft Hell RPG Server UP Ranking
+    </div>
+
+  </div>
+
+  <div class="layout">
+
+    <section class="left-panel">
+
+      <img
+        class="post-image"
+        src="./images/chaennarung.png"
+        alt="챈나룽 서버 안내 이미지"
+      />
+
+      <div class="summary-box">
+
+        <div class="summary-title">
+          📜 서버 요약
+        </div>
+
+        마인크래프트 기반의 자유로운 생활형
+        라이트 힐링 RPG 서버입니다.<br /><br />
+
+        낚시, 농사, 광질, 요리, 탐험,
+        도박, 펫 키우기 등 자유도 높은 콘텐츠와
+        PVP 및 히든 콘텐츠가 존재합니다.<br /><br />
+
+        좋아요(UP) 순위가
+        중요한 선정 기준입니다.
+
+      </div>
+
+      <div class="summary-box">
+
+        <div class="summary-title">
+          📅 일정 / 선정 기준
+        </div>
+
+        서버 운영일:
+        6월 9일 ~ 6월 23일<br />
+
+        1차 모집기간:
+        5월 18일 ~ 6월 3일<br />
+
+        1차 발표:
+        6월 4일<br />
+
+        설명회:
+        6월 7일<br /><br />
+
+        선정 기준:<br />
+
+        - UP 순위: 111명<br />
+        - 챈덤식: 28명<br />
+        - 운영자픽: 2명<br />
+        - 총 141명
+
+      </div>
+
+    </section>
+
+    <section class="ranking-panel">
+
+      <div class="ranking-title">
+        🏆 실시간 UP 순위
+      </div>
+
+      <div class="search-title">
+        🔍 아이디 / 닉네임 검색
+      </div>
+
+      <input
+        class="search"
+        id="search"
+        type="text"
+        placeholder="아이디, 닉네임, 댓글 내용 검색"
+      />
+
+      <div class="info" id="info">
+        불러오는 중...
+      </div>
+
+      <div id="ranking"></div>
+
+    </section>
+
+  </div>
+
+  <script>
+
+    let comments = [];
+
+    async function loadComments() {
+
+      try {
+
+        const res =
+          await fetch("/api/comments");
+
+        const data =
+          await res.json();
+
+        comments =
+          data.comments || [];
+
+        document.getElementById("info").innerText =
+          `총 ${data.total}개 신청 댓글 | 마지막 업데이트: ${data.updatedAt}`;
+
+        renderComments();
+
+      } catch (error) {
+
+        document.getElementById("info").innerText =
+          "데이터를 불러오지 못했습니다.";
+      }
+    }
+
+    function escapeHtml(text) {
+
+      return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderComments() {
+
+      const keyword =
+        document
+          .getElementById("search")
+          .value
+          .toLowerCase();
+
+      const ranking =
+        document.getElementById("ranking");
+
+      ranking.innerHTML = "";
+
+      const filtered =
+        comments.filter(item => {
+
+          return (
+
+            String(item.userNick || "")
+              .toLowerCase()
+              .includes(keyword)
+
+            ||
+
+            String(item.userId || "")
+              .toLowerCase()
+              .includes(keyword)
+
+            ||
+
+            String(item.comment || "")
+              .toLowerCase()
+              .includes(keyword)
+          );
+        });
+
+      if (filtered.length === 0) {
+
+        ranking.innerHTML =
+          `<div class="empty">검색 결과가 없습니다.</div>`;
+
+        return;
+      }
+
+      filtered.forEach((item, index) => {
+
+        const div =
+          document.createElement("div");
+
+        let topClass = "";
+
+        if (index === 0) topClass = "top1";
+        if (index === 1) topClass = "top2";
+        if (index === 2) topClass = "top3";
+
+        div.className =
+          `card ${topClass}`;
+
+        div.innerHTML = `
+
+          <div class="rank">
+            ${index + 1}위
+          </div>
+
+          <div>
+
+            <div class="nick">
+              😈 ${escapeHtml(item.userNick)}
+            </div>
+
+            <div class="user-id">
+              @${escapeHtml(item.userId)}
+            </div>
+
+            <div class="comment">
+              ${escapeHtml(item.comment)}
+            </div>
+
+          </div>
+
+          <div class="like">
+            ${item.likeCnt}
+            <span class="like-label">UP</span>
+          </div>
+        `;
+
+        ranking.appendChild(div);
+      });
+    }
+
+    document
+      .getElementById("search")
+      .addEventListener(
+        "input",
+        renderComments
+      );
+
+    loadComments();
+
+    setInterval(
+      loadComments,
+      15000
+    );
+
+  </script>
+
+</body>
+</html>
