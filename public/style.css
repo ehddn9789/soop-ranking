@@ -227,4 +227,22 @@
 
         max-height: 60vh;
     }
+
+    .profile-image {
+
+        width: 64px;
+        height: 64px;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+
+        border:
+            2px solid rgba(180,0,255,0.5);
+
+        box-shadow:
+            0 0 15px rgba(170,0,255,0.25);
+
+        flex-shrink: 0;
+    }
 }

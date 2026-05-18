@@ -52,7 +52,6 @@ body::before {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    text-shadow: 0 0 25px rgba(170,0,255,0.4);
 }
 
 .sub {
@@ -82,7 +81,6 @@ body::before {
     box-shadow:
         0 0 35px rgba(160,0,255,0.18),
         inset 0 0 20px rgba(160,0,255,0.08);
-    backdrop-filter: blur(10px);
     margin-bottom: 25px;
 }
 
@@ -102,7 +100,6 @@ body::before {
     box-shadow:
         0 0 25px rgba(155,0,255,0.18),
         inset 0 0 20px rgba(140,0,255,0.06);
-    backdrop-filter: blur(10px);
 }
 
 .info-card h2 {
@@ -136,12 +133,6 @@ body::before {
     color: white;
     font-size: 16px;
     outline: none;
-    transition: 0.2s;
-}
-
-.search-box input:focus {
-    border-color: #c26fff;
-    box-shadow: 0 0 15px rgba(170,0,255,0.25);
 }
 
 .ranking-box {
@@ -155,28 +146,14 @@ body::before {
     box-shadow:
         0 0 30px rgba(155,0,255,0.15),
         inset 0 0 15px rgba(155,0,255,0.05);
-    backdrop-filter: blur(12px);
-}
-
-.ranking-box::-webkit-scrollbar {
-    width: 10px;
-}
-
-.ranking-box::-webkit-scrollbar-thumb {
-    background: rgba(180,0,255,0.45);
-    border-radius: 999px;
 }
 
 .ranking-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    text-align: center;
     font-size: 30px;
     font-weight: 800;
     margin-bottom: 12px;
     color: #efddff;
-    text-shadow: 0 0 18px rgba(170,0,255,0.4);
 }
 
 .update-info {
@@ -187,7 +164,6 @@ body::before {
 }
 
 .rank-card {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -198,28 +174,11 @@ body::before {
         linear-gradient(135deg, rgba(45,18,70,0.92), rgba(18,8,30,0.96));
     border: 1px solid rgba(200,120,255,0.12);
     transition: 0.25s;
-    overflow: hidden;
 }
 
 .rank-card:hover {
     transform: translateY(-4px) scale(1.01);
     box-shadow: 0 0 22px rgba(170,0,255,0.25);
-}
-
-.rank-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -120%;
-    width: 100%;
-    height: 100%;
-    background:
-        linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-    transition: 0.7s;
-}
-
-.rank-card:hover::before {
-    left: 120%;
 }
 
 .top1 {
@@ -238,22 +197,33 @@ body::before {
 .rank-left {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 16px;
 }
 
 .rank-number {
-    width: 60px;
-    height: 60px;
+    width: 56px;
+    height: 56px;
     border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     background:
         linear-gradient(135deg, #6b1ea9, #2a083d);
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
     color: white;
-    box-shadow: 0 0 18px rgba(170,0,255,0.3);
+    flex-shrink: 0;
+}
+
+.profile-image {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(200,120,255,0.5);
+    box-shadow: 0 0 16px rgba(170,0,255,0.28);
+    background: rgba(20,8,35,0.95);
+    flex-shrink: 0;
 }
 
 .nickname {
@@ -294,7 +264,6 @@ body::before {
     font-size: 28px;
     font-weight: 900;
     color: #f2dcff;
-    text-shadow: 0 0 18px rgba(170,0,255,0.35);
 }
 
 .vote-btn {
@@ -308,12 +277,6 @@ body::before {
     color: white;
     font-size: 14px;
     font-weight: 700;
-    transition: 0.2s;
-}
-
-.vote-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(170,0,255,0.35);
 }
 
 .empty {
@@ -350,19 +313,6 @@ body::before {
         font-size: 15px;
     }
 
-    .info-card {
-        padding: 24px;
-        border-radius: 22px;
-    }
-
-    .info-card h2 {
-        font-size: 24px;
-    }
-
-    .ranking-title {
-        font-size: 24px;
-    }
-
     .rank-card {
         flex-direction: column;
         align-items: flex-start;
@@ -372,10 +322,6 @@ body::before {
     .rank-right {
         width: 100%;
         text-align: left;
-    }
-
-    .up-count {
-        font-size: 22px;
     }
 
     .poster-wrapper {
@@ -395,19 +341,13 @@ body::before {
 <div class="container">
 
     <div class="header">
-        <div class="title">
-            챈나룽 실시간 UP 순위
-        </div>
-
-        <div class="sub">
-            SOOP 참가 신청 댓글 좋아요 순위를 실시간으로 확인하세요
-        </div>
+        <div class="title">챈나룽 실시간 UP 순위</div>
+        <div class="sub">SOOP 참가 신청 댓글 좋아요 순위를 실시간으로 확인하세요</div>
     </div>
 
     <div class="layout">
 
         <div class="left-panel">
-
             <div class="poster-wrapper">
                 <img
                     src="./images/channarung.png"
@@ -418,7 +358,6 @@ body::before {
 
             <div class="info-card">
                 <h2>지옥의 초대장</h2>
-
                 <p>
                     인세와 지옥의 경계가 무너진 순간,
                     살아남기 위한 참가자들의 경쟁이 시작된다.
@@ -429,7 +368,6 @@ body::before {
                     참가자를 클릭하면 바로 SOOP 원본 게시글로 이동할 수 있습니다.
                 </p>
             </div>
-
         </div>
 
         <div class="right-panel">
@@ -443,17 +381,9 @@ body::before {
             </div>
 
             <div class="ranking-box">
-
-                <div class="ranking-title">
-                    👑 실시간 랭킹
-                </div>
-
-                <div class="update-info" id="updateInfo">
-                    불러오는 중...
-                </div>
-
+                <div class="ranking-title">👑 실시간 랭킹</div>
+                <div class="update-info" id="updateInfo">불러오는 중...</div>
                 <div id="rankingList"></div>
-
             </div>
 
         </div>
@@ -463,70 +393,71 @@ body::before {
 </div>
 
 <script>
-const rankingList = document.getElementById('rankingList');
-const searchInput = document.getElementById('searchInput');
-const updateInfo = document.getElementById('updateInfo');
+const rankingList = document.getElementById("rankingList");
+const searchInput = document.getElementById("searchInput");
+const updateInfo = document.getElementById("updateInfo");
 
 let rankingData = [];
 
 async function loadRanking() {
     try {
-        const res = await fetch('/api/ranking');
+        const res = await fetch("/api/ranking");
 
         if (!res.ok) {
-            throw new Error('API 응답 실패');
+            throw new Error("API 응답 실패");
         }
 
         rankingData = await res.json();
 
         updateInfo.innerText =
-            `총 ${rankingData.length}개 댓글 | 마지막 업데이트: ${new Date().toLocaleString('ko-KR')}`;
+            `총 ${rankingData.length}개 댓글 | 마지막 업데이트: ${new Date().toLocaleString("ko-KR")}`;
 
         renderRanking();
 
-    } catch(err) {
+    } catch (err) {
         console.error(err);
-        updateInfo.innerText = '데이터를 불러오지 못했습니다.';
+        updateInfo.innerText = "실시간 랭킹을 불러오지 못했습니다.";
     }
 }
 
 function renderRanking() {
-    rankingList.innerHTML = '';
+    rankingList.innerHTML = "";
 
     const keyword = searchInput.value.toLowerCase();
 
     const filtered = rankingData.filter(user =>
-        String(user.nickname || '').toLowerCase().includes(keyword) ||
-        String(user.userId || '').toLowerCase().includes(keyword)
+        String(user.nickname || "").toLowerCase().includes(keyword) ||
+        String(user.userId || "").toLowerCase().includes(keyword)
     );
 
     if (filtered.length === 0) {
-        rankingList.innerHTML = `<div class="empty">검색 결과가 없습니다.</div>`;
+        rankingList.innerHTML =
+            `<div class="empty">검색 결과가 없습니다.</div>`;
         return;
     }
 
     filtered.forEach(user => {
-        const card = document.createElement('div');
+        const card = document.createElement("div");
 
-        let topClass = '';
+        let topClass = "";
 
-        if (user.rank === 1) topClass = 'top1';
-        if (user.rank === 2) topClass = 'top2';
-        if (user.rank === 3) topClass = 'top3';
+        if (user.rank === 1) topClass = "top1";
+        if (user.rank === 2) topClass = "top2";
+        if (user.rank === 3) topClass = "top3";
 
         card.className = `rank-card ${topClass}`;
 
-        let movementText = '─ 유지';
+        let movementText = "─ 유지";
 
-        if (user.movement === 'up') {
+        if (user.movement === "up") {
             movementText = `▲ ${user.rankDiff}계단 상승`;
         }
 
-        if (user.movement === 'down') {
+        if (user.movement === "down") {
             movementText = `▼ ${user.rankDiff}계단 하락`;
         }
 
-        let likeDiffText = '';
+        let likeDiffText = "";
 
         if (user.likeDiff > 0) {
             likeDiffText = `<div class="user-id">+${user.likeDiff} UP 증가</div>`;
@@ -534,7 +465,17 @@ function renderRanking() {
 
         card.innerHTML = `
             <div class="rank-left">
-                <div class="rank-number">${user.rank}</div>
+
+                <div class="rank-number">
+                    ${user.rank}
+                </div>
+
+                <img
+                    class="profile-image"
+                    src="${user.profileImage || ""}"
+                    alt="${escapeHtml(user.nickname)} 프로필"
+                    onerror="this.style.display='none'"
+                >
 
                 <div>
                     <div class="nickname">
@@ -551,6 +492,7 @@ function renderRanking() {
 
                     ${likeDiffText}
                 </div>
+
             </div>
 
             <div class="rank-right">
@@ -573,15 +515,15 @@ function renderRanking() {
 }
 
 function escapeHtml(text) {
-    return String(text || '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
+    return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
-searchInput.addEventListener('input', renderRanking);
+searchInput.addEventListener("input", renderRanking);
 
 loadRanking();
 setInterval(loadRanking, 10000);

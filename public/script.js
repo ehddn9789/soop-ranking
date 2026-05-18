@@ -72,6 +72,11 @@ function renderRanking() {
         card.innerHTML = `
             <div class="rank-left">
                 <div class="rank-number">${user.rank}</div>
+                <img
+                    class="profile-image"
+                    src="${user.profileImage}"
+                    alt=""
+                ></img>
 
                 <div>
                     <div class="nickname">

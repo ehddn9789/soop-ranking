@@ -35,6 +35,7 @@ app.get("/api/ranking", async (req, res) => {
     }
 
     allComments.sort((a, b) => b.likeCnt - a.likeCnt);
+    console.log(allComments[0]);
 
     const ranking = allComments.map((item, index) => {
       const key = String(item.pCommentNo);
@@ -61,6 +62,7 @@ app.get("/api/ranking", async (req, res) => {
       return {
         rank: newRank,
         nickname: item.userNick,
+        profileImage: item.profileImage,
         userId: item.userId,
         up: item.likeCnt,
         likeDiff: likeDiff,
