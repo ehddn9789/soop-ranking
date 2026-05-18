@@ -819,5 +819,51 @@ setInterval(loadRanking, 10000);
 
 </script>
 
+<!-- 맨 위로 버튼 -->
+
+<button
+    id="topButton"
+    class="top-button"
+    title="맨 위로"
+>
+    ↑
+</button>
+
+<script>
+
+/* =========================
+   맨 위 버튼
+========================= */
+
+const topButton =
+    document.getElementById("topButton");
+
+window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 300) {
+
+        topButton.classList.add(
+            "show-top-button"
+        );
+
+    } else {
+
+        topButton.classList.remove(
+            "show-top-button"
+        );
+    }
+});
+
+topButton.addEventListener("click", () => {
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+    });
+});
+
+</script>
 </body>
 </html>
