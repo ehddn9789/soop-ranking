@@ -1,0 +1,230 @@
+* {
+    box-sizing: border-box;
+}
+
+/* =========================
+   랭킹 우측 영역
+========================= */
+
+.rank-right {
+    text-align: right;
+}
+
+/* =========================
+   UP 수
+========================= */
+
+.up-count {
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    color: #ff4040;
+
+    text-shadow:
+        0 0 15px red;
+}
+
+/* =========================
+   순위 변동
+========================= */
+
+.rank-move {
+
+    margin-top: 8px;
+
+    font-size: 18px;
+}
+
+.rank-up {
+
+    color: #00ff99;
+
+    animation:
+        glowUp 1s infinite alternate;
+}
+
+.rank-down {
+
+    color: #ff5555;
+
+    animation:
+        glowDown 1s infinite alternate;
+}
+
+/* =========================
+   애니메이션
+========================= */
+
+@keyframes glowUp {
+
+    from {
+        text-shadow:
+            0 0 5px #00ff99;
+    }
+
+    to {
+        text-shadow:
+            0 0 20px #00ff99;
+    }
+}
+
+@keyframes glowDown {
+
+    from {
+        text-shadow:
+            0 0 5px red;
+    }
+
+    to {
+        text-shadow:
+            0 0 20px red;
+    }
+}
+
+/* =========================
+   카드 전체 클릭 영역
+========================= */
+
+.rank-link {
+
+    position: absolute;
+
+    inset: 0;
+}
+
+/* =========================
+   포스터 영역
+========================= */
+
+.poster-wrapper {
+
+    width: 100%;
+
+    max-height: 85vh;
+
+    overflow: hidden;
+
+    border-radius: 30px;
+
+    border:
+        1px solid rgba(180,0,255,0.25);
+
+    background:
+        rgba(15,5,25,0.9);
+
+    box-shadow:
+        0 0 35px rgba(160,0,255,0.18),
+        inset 0 0 20px rgba(160,0,255,0.08);
+
+    backdrop-filter:
+        blur(10px);
+
+    margin-bottom: 25px;
+}
+
+.poster-image {
+
+    width: 100%;
+
+    max-height: 85vh;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+/* =========================
+   공통 카드 라운드
+========================= */
+
+.rank-card,
+.hero-box,
+.ranking-section,
+.search-box,
+.info-box {
+
+    border-radius: 24px;
+}
+
+/* =========================
+   모바일 반응형
+========================= */
+
+@media (max-width: 768px) {
+
+    .hero-box {
+
+        padding: 30px 20px;
+    }
+
+    .hero h1 {
+
+        font-size: 52px;
+    }
+
+    .sub-title {
+
+        font-size: 18px;
+    }
+
+    .description {
+
+        font-size: 16px;
+    }
+
+    .ranking-section {
+
+        padding: 20px;
+    }
+
+    .rank-card {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .rank-right {
+
+        width: 100%;
+
+        text-align: left;
+    }
+
+    .up-count {
+
+        font-size: 26px;
+    }
+
+    .user-id {
+
+        margin-top: 3px;
+
+        font-size: 13px;
+
+        color: #bfa6d9;
+    }
+
+    .like-diff {
+
+        margin-top: 5px;
+
+        font-size: 13px;
+
+        color: #b985ff;
+
+        font-weight: 700;
+    }
+
+    .poster-wrapper {
+
+        border-radius: 22px;
+    }
+
+    .poster-image {
+
+        max-height: 60vh;
+    }
+}
