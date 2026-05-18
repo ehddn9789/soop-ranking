@@ -6,7 +6,7 @@
 
 <title>챈나룽 실시간 UP 순위</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 
 <body>
@@ -15,7 +15,10 @@
 
     <div class="header">
         <div class="title">챈나룽 실시간 UP 순위</div>
-        <div class="sub">SOOP 참가 신청 댓글 좋아요 순위를 실시간으로 확인하세요</div>
+
+        <div class="sub">
+            SOOP 참가 신청 댓글 좋아요 순위를 실시간으로 확인하세요
+        </div>
     </div>
 
     <div class="main-panel">
@@ -28,68 +31,131 @@
             >
         </div>
 
-        <div class="ranking-box" id="rankingBox">
+        <div class="ranking-box">
+
+            <!-- 탭 -->
 
             <div class="tab-box">
-                <button id="rankingTab" class="tab-btn active-tab" type="button">
+
+                <button
+                    id="rankingTab"
+                    class="tab-btn active-tab"
+                    type="button"
+                >
                     👑 실시간 랭킹
                 </button>
 
-                <button id="freepassTab" class="tab-btn" type="button">
+                <button
+                    id="freepassTab"
+                    class="tab-btn"
+                    type="button"
+                >
                     🛡 프리패스 인원
                 </button>
 
-                <button id="serverInfoTab" class="tab-btn" type="button">
+                <button
+                    id="serverInfoTab"
+                    class="tab-btn"
+                    type="button"
+                >
                     📜 서버 정보
                 </button>
+
             </div>
 
-            <div class="cutline-panel" id="cutlinePanel" title="111등/112등으로 이동">
-                <div class="cutline-title">🔥 현재 생존 컷라인</div>
+            <!-- 컷라인 -->
+
+            <div
+                class="cutline-panel"
+                id="cutlinePanel"
+                title="111등 / 112등으로 이동"
+            >
+
+                <div class="cutline-title">
+                    🔥 현재 생존 컷라인
+                </div>
 
                 <div class="cutline-row">
+
                     <div class="safe-side">
-                        <span class="cut-label">111위 생존권</span>
-                        <span id="safeUser">불러오는 중...</span>
+
+                        <span class="cut-label">
+                            111위 생존권
+                        </span>
+
+                        <span id="safeUser">
+                            불러오는 중...
+                        </span>
+
                     </div>
 
                     <div class="danger-side">
-                        <span class="cut-label">112위 탈락권</span>
-                        <span id="dangerUser">불러오는 중...</span>
+
+                        <span class="cut-label">
+                            112위 탈락권
+                        </span>
+
+                        <span id="dangerUser">
+                            불러오는 중...
+                        </span>
+
                     </div>
+
                 </div>
 
                 <div class="gap-text" id="gapText">
                     UP 차이 계산 중...
                 </div>
+
             </div>
 
-            <div class="update-info" id="updateInfo">불러오는 중...</div>
+            <!-- 업데이트 -->
+
+            <div class="update-info" id="updateInfo">
+                불러오는 중...
+            </div>
+
+            <!-- 랭킹 -->
 
             <div id="rankingList"></div>
 
-            <div id="serverInfoView" class="server-info-view" style="display:none;">
+            <!-- 서버 정보 -->
+
+            <div
+                id="serverInfoView"
+                class="server-info-view"
+                style="display:none;"
+            >
+
                 <div class="poster-wrapper">
+
                     <img
                         src="./images/channarung.png"
                         class="poster-image"
                         alt="챈나룽 서버 이미지"
                     >
+
                 </div>
 
                 <div class="info-card">
+
                     <h2>지옥의 초대장</h2>
 
                     <p>
                         인세와 지옥의 경계가 무너진 순간,
                         살아남기 위한 참가자들의 경쟁이 시작된다.
                         <br><br>
+
                         이 사이트는 SOOP 신청 댓글의 좋아요 수(UP)를
                         실시간으로 집계하여 순위를 표시합니다.
                         <br><br>
-                        참가자를 클릭하면 바로 SOOP 원본 게시글로 이동할 수 있습니다.
+
+                        참가자를 클릭하면 바로
+                        SOOP 원본 게시글로 이동할 수 있습니다.
                     </p>
+
                 </div>
+
             </div>
 
         </div>
@@ -99,29 +165,50 @@
 </div>
 
 <script>
-const rankingList = document.getElementById("rankingList");
-const searchInput = document.getElementById("searchInput");
-const updateInfo = document.getElementById("updateInfo");
 
-const rankingTab = document.getElementById("rankingTab");
-const freepassTab = document.getElementById("freepassTab");
-const serverInfoTab = document.getElementById("serverInfoTab");
+const rankingList =
+    document.getElementById("rankingList");
 
-const cutlinePanel = document.getElementById("cutlinePanel");
-const rankingBox = document.getElementById("rankingBox");
-const serverInfoView = document.getElementById("serverInfoView");
+const searchInput =
+    document.getElementById("searchInput");
 
-const safeUser = document.getElementById("safeUser");
-const dangerUser = document.getElementById("dangerUser");
-const gapText = document.getElementById("gapText");
+const updateInfo =
+    document.getElementById("updateInfo");
+
+const rankingTab =
+    document.getElementById("rankingTab");
+
+const freepassTab =
+    document.getElementById("freepassTab");
+
+const serverInfoTab =
+    document.getElementById("serverInfoTab");
+
+const cutlinePanel =
+    document.getElementById("cutlinePanel");
+
+const serverInfoView =
+    document.getElementById("serverInfoView");
+
+const safeUser =
+    document.getElementById("safeUser");
+
+const dangerUser =
+    document.getElementById("dangerUser");
+
+const gapText =
+    document.getElementById("gapText");
 
 let rankingData = [];
+
 let currentView = "ranking";
+
 let previousCutlineUserId = null;
 
 const CUTLINE_RANK = 111;
 
 const FREE_PASS_USERS = [
+
     "ldrboo",
     "khm11903",
     "qn308dud",
@@ -135,200 +222,404 @@ const FREE_PASS_USERS = [
     "kymakyma"
 ];
 
+/* =========================
+   탭
+========================= */
+
 rankingTab.addEventListener("click", () => {
+
     currentView = "ranking";
+
     setActiveTab();
+
     renderRanking();
 });
 
 freepassTab.addEventListener("click", () => {
+
     currentView = "freepass";
+
     setActiveTab();
+
     renderRanking();
 });
 
 serverInfoTab.addEventListener("click", () => {
+
     currentView = "server";
+
     setActiveTab();
+
     renderRanking();
 });
 
+/* =========================
+   컷라인 클릭
+========================= */
+
 cutlinePanel.addEventListener("click", () => {
+
     currentView = "ranking";
+
     searchInput.value = "";
 
     setActiveTab();
+
     renderRanking();
 
     setTimeout(() => {
+
         scrollToCutline();
+
     }, 150);
 });
 
+/* =========================
+   활성 탭
+========================= */
+
 function setActiveTab() {
-    rankingTab.classList.toggle("active-tab", currentView === "ranking");
-    freepassTab.classList.toggle("active-tab", currentView === "freepass");
-    serverInfoTab.classList.toggle("active-tab", currentView === "server");
+
+    rankingTab.classList.toggle(
+        "active-tab",
+        currentView === "ranking"
+    );
+
+    freepassTab.classList.toggle(
+        "active-tab",
+        currentView === "freepass"
+    );
+
+    serverInfoTab.classList.toggle(
+        "active-tab",
+        currentView === "server"
+    );
 }
 
+/* =========================
+   데이터 로드
+========================= */
+
 async function loadRanking() {
+
     try {
-        const res = await fetch("/api/ranking");
+
+        const res =
+            await fetch("/api/ranking");
 
         if (!res.ok) {
+
             throw new Error("API 응답 실패");
         }
 
         rankingData = await res.json();
+
         renderRanking();
 
     } catch (err) {
+
         console.error(err);
-        updateInfo.innerText = "실시간 랭킹을 불러오지 못했습니다.";
+
+        updateInfo.innerText =
+            "실시간 랭킹을 불러오지 못했습니다.";
     }
 }
 
+/* =========================
+   렌더링
+========================= */
+
 function renderRanking() {
+
     rankingList.innerHTML = "";
 
-    const keyword = searchInput.value.toLowerCase();
+    const keyword =
+        searchInput.value.toLowerCase();
 
-    const freepassUsers = rankingData.filter(user =>
-        FREE_PASS_USERS.includes(String(user.userId || "").toLowerCase())
-    );
+    const freepassUsers =
 
-    const normalUsers = rankingData.filter(user =>
-        !FREE_PASS_USERS.includes(String(user.userId || "").toLowerCase())
-    );
+        rankingData.filter(user =>
+
+            FREE_PASS_USERS.includes(
+
+                String(user.userId || "")
+                    .toLowerCase()
+            )
+        );
+
+    const normalUsers =
+
+        rankingData.filter(user =>
+
+            !FREE_PASS_USERS.includes(
+
+                String(user.userId || "")
+                    .toLowerCase()
+            )
+        );
+
+    /* 서버 정보 */
 
     if (currentView === "server") {
+
         searchInput.style.display = "none";
+
         cutlinePanel.style.display = "none";
+
         updateInfo.style.display = "none";
+
         rankingList.style.display = "none";
+
         serverInfoView.style.display = "block";
+
         return;
     }
 
     searchInput.style.display = "block";
+
     updateInfo.style.display = "block";
+
     rankingList.style.display = "block";
+
     serverInfoView.style.display = "none";
 
     cutlinePanel.style.display =
+
         currentView === "ranking"
-            ? "block"
-            : "none";
+
+        ? "block"
+
+        : "none";
+
+    /* 현재 유저 목록 */
 
     const targetUsers =
-        currentView === "freepass"
-            ? freepassUsers
-            : normalUsers;
 
-    const reRankedUsers = targetUsers.map((user, index) => ({
-        ...user,
-        displayRank: index + 1
-    }));
+        currentView === "freepass"
+
+        ? freepassUsers
+
+        : normalUsers;
+
+    const reRankedUsers =
+
+        targetUsers.map((user, index) => ({
+
+            ...user,
+
+            displayRank: index + 1
+        }));
+
+    /* 컷라인 정보 */
 
     if (currentView === "ranking") {
+
         updateCutlinePanel(normalUsers);
     }
 
-    const filtered = reRankedUsers.filter(user =>
-        String(user.nickname || "").toLowerCase().includes(keyword) ||
-        String(user.userId || "").toLowerCase().includes(keyword)
-    );
+    /* 검색 */
+
+    const filtered =
+
+        reRankedUsers.filter(user =>
+
+            String(user.nickname || "")
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            String(user.userId || "")
+                .toLowerCase()
+                .includes(keyword)
+        );
+
+    /* 업데이트 텍스트 */
 
     updateInfo.innerText =
+
         currentView === "freepass"
-            ? `프리패스 인원 ${freepassUsers.length}명 | 마지막 업데이트: ${new Date().toLocaleString("ko-KR")}`
-            : `총 ${rankingData.length}개 댓글 | 랭킹 반영 ${normalUsers.length}명 | 프리패스 ${freepassUsers.length}명 제외 | 마지막 업데이트: ${new Date().toLocaleString("ko-KR")}`;
+
+        ? `프리패스 인원 ${freepassUsers.length}명 | 마지막 업데이트: ${new Date().toLocaleString("ko-KR")}`
+
+        : `총 ${rankingData.length}개 댓글 | 랭킹 반영 ${normalUsers.length}명 | 프리패스 ${freepassUsers.length}명 제외 | 마지막 업데이트: ${new Date().toLocaleString("ko-KR")}`;
+
+    /* 없음 */
 
     if (filtered.length === 0) {
-        rankingList.innerHTML =
-            `<div class="empty">${
-                currentView === "freepass"
+
+        rankingList.innerHTML = `
+
+            <div class="empty">
+
+                ${
+                    currentView === "freepass"
+
                     ? "프리패스 인원이 없습니다."
+
                     : "검색 결과가 없습니다."
-            }</div>`;
+                }
+
+            </div>
+        `;
+
         return;
     }
 
+    /* 카드 생성 */
+
     filtered.forEach(user => {
+
+        /* 컷라인 */
+
         if (
-            currentView === "ranking" &&
+
+            currentView === "ranking"
+
+            &&
+
             user.displayRank === CUTLINE_RANK + 1
         ) {
-            const divider = document.createElement("div");
-            divider.className = "cutline-divider";
-            divider.innerText = "🔥 생존 마감선 — 111위까지 선정 🔥";
+
+            const divider =
+                document.createElement("div");
+
+            divider.className =
+                "cutline-divider";
+
+            divider.innerText =
+                "🔥 생존 마감선 — 111위까지 선정 🔥";
+
             rankingList.appendChild(divider);
         }
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
         let topClass = "";
 
-        if (user.displayRank === 1) topClass += " top1";
-        if (user.displayRank === 2) topClass += " top2";
-        if (user.displayRank === 3) topClass += " top3";
+        /* TOP 3 */
+
+        if (user.displayRank === 1)
+            topClass += " top1";
+
+        if (user.displayRank === 2)
+            topClass += " top2";
+
+        if (user.displayRank === 3)
+            topClass += " top3";
+
+        /* 컷라인 */
 
         if (currentView === "ranking") {
+
             if (user.displayRank === CUTLINE_RANK) {
+
                 topClass += " cutline-safe-card";
+
                 card.id = "cutlineSafeCard";
             }
 
             if (user.displayRank === CUTLINE_RANK + 1) {
+
                 topClass += " cutline-danger-card";
+
                 card.id = "cutlineDangerCard";
             }
 
             if (
-                user.displayRank >= CUTLINE_RANK - 3 &&
+
+                user.displayRank >= CUTLINE_RANK - 3
+
+                &&
+
                 user.displayRank <= CUTLINE_RANK + 4
             ) {
+
                 topClass += " cutline-zone";
             }
         }
 
-        card.className = `rank-card ${topClass}`;
+        card.className =
+            `rank-card ${topClass}`;
+
+        /* 순위 변동 */
 
         let movementText = "─ 유지";
 
         if (user.movement === "up") {
-            movementText = `▲ ${user.rankDiff}계단 상승`;
+
+            movementText =
+                `▲ ${user.rankDiff}계단 상승`;
         }
 
         if (user.movement === "down") {
-            movementText = `▼ ${user.rankDiff}계단 하락`;
+
+            movementText =
+                `▼ ${user.rankDiff}계단 하락`;
         }
+
+        /* UP 증가 */
 
         let likeDiffText = "";
 
         if (user.likeDiff > 0) {
-            likeDiffText = `<div class="user-id">+${user.likeDiff} UP 증가</div>`;
+
+            likeDiffText = `
+
+                <div class="user-id">
+                    +${user.likeDiff} UP 증가
+                </div>
+            `;
         }
+
+        /* 상태 */
 
         let statusText = "";
 
         if (
-            currentView === "ranking" &&
+
+            currentView === "ranking"
+
+            &&
+
             user.displayRank === CUTLINE_RANK
         ) {
-            statusText = `<div class="user-id">🟡 생존권 마지막 자리</div>`;
+
+            statusText = `
+
+                <div class="user-id">
+                    🟡 생존권 마지막 자리
+                </div>
+            `;
         }
 
         if (
-            currentView === "ranking" &&
+
+            currentView === "ranking"
+
+            &&
+
             user.displayRank === CUTLINE_RANK + 1
         ) {
-            statusText = `<div class="user-id">⚪ 탈락권 첫 번째</div>`;
+
+            statusText = `
+
+                <div class="user-id">
+                    ⚪ 탈락권 첫 번째
+                </div>
+            `;
         }
 
+        /* 카드 */
+
         card.innerHTML = `
+
             <div class="rank-left">
-                <div class="rank-number">${user.displayRank}</div>
+
+                <div class="rank-number">
+                    ${user.displayRank}
+                </div>
 
                 <img
                     class="profile-image"
@@ -338,6 +629,7 @@ function renderRanking() {
                 >
 
                 <div>
+
                     <div class="nickname">
                         ${escapeHtml(user.nickname)}
                     </div>
@@ -351,16 +643,27 @@ function renderRanking() {
                     </div>
 
                     ${statusText}
+
                     ${likeDiffText}
+
                 </div>
+
             </div>
 
             <div class="rank-right">
-                <div class="up-count">👍 ${user.up}</div>
 
-                <a href="${user.link}" target="_blank" class="vote-btn">
+                <div class="up-count">
+                    👍 ${user.up}
+                </div>
+
+                <a
+                    href="${user.link}"
+                    target="_blank"
+                    class="vote-btn"
+                >
                     원본 보기
                 </a>
+
             </div>
         `;
 
@@ -368,101 +671,128 @@ function renderRanking() {
     });
 }
 
+/* =========================
+   컷라인 이동
+========================= */
+
 function scrollToCutline() {
+
     const target =
-        document.getElementById("cutlineSafeCard") ||
+
+        document.getElementById("cutlineSafeCard")
+
+        ||
+
         document.getElementById("cutlineDangerCard");
 
     if (!target) {
-        alert("아직 111등/112등 컷라인이 형성되지 않았습니다.");
+
+        alert(
+            "아직 111등/112등 컷라인이 형성되지 않았습니다."
+        );
+
         return;
     }
 
-    const rankingBoxRect = rankingBox.getBoundingClientRect();
-    const targetRect = target.getBoundingClientRect();
+    const targetY =
 
-    const nextScrollTop =
-        rankingBox.scrollTop +
-        targetRect.top -
-        rankingBoxRect.top -
-        rankingBox.clientHeight / 2 +
-        target.clientHeight / 2;
+        window.scrollY
 
-    rankingBox.scrollTo({
-        top: nextScrollTop,
+        +
+
+        target.getBoundingClientRect().top
+
+        -
+
+        120;
+
+    window.scrollTo({
+
+        top: targetY,
+
         behavior: "smooth"
     });
 
     target.classList.add("cutline-flash");
 
     setTimeout(() => {
+
         target.classList.remove("cutline-flash");
+
     }, 1800);
 }
 
-function updateCutlinePanel(normalUsers) {
-    const ranked = normalUsers.map((user, index) => ({
-        ...user,
-        displayRank: index + 1
-    }));
+/* =========================
+   컷라인 정보
+========================= */
 
-    const safe = ranked[CUTLINE_RANK - 1];
-    const danger = ranked[CUTLINE_RANK];
+function updateCutlinePanel(normalUsers) {
+
+    const ranked =
+
+        normalUsers.map((user, index) => ({
+
+            ...user,
+
+            displayRank: index + 1
+        }));
+
+    const safe =
+        ranked[CUTLINE_RANK - 1];
+
+    const danger =
+        ranked[CUTLINE_RANK];
 
     if (!safe) {
-        safeUser.innerText = "아직 111명 미만";
+
+        safeUser.innerText =
+            "아직 111명 미만";
+
         dangerUser.innerText = "-";
-        gapText.innerText = "아직 컷라인이 형성되지 않았습니다.";
+
+        gapText.innerText =
+            "아직 컷라인이 형성되지 않았습니다.";
+
         return;
     }
 
-    safeUser.innerText = `${safe.nickname} 👍 ${safe.up}`;
+    safeUser.innerText =
+        `${safe.nickname} 👍 ${safe.up}`;
 
     if (!danger) {
-        dangerUser.innerText = "112위 없음";
-        gapText.innerText = "현재 111명 이하라 전원 생존권입니다.";
+
+        dangerUser.innerText =
+            "112위 없음";
+
+        gapText.innerText =
+            "현재 111명 이하라 전원 생존권입니다.";
+
         return;
     }
 
-    dangerUser.innerText = `${danger.nickname} 👍 ${danger.up}`;
+    dangerUser.innerText =
+        `${danger.nickname} 👍 ${danger.up}`;
 
-    const gap = safe.up - danger.up;
+    const gap =
+        safe.up - danger.up;
 
     gapText.innerText =
+
         gap === 0
-            ? "111위와 112위가 동점입니다. 순위 변동 가능성 매우 높음."
-            : `111위와 112위 차이: ${gap} UP`;
 
-    if (
-        previousCutlineUserId &&
-        previousCutlineUserId !== safe.userId
-    ) {
-        showToast(`⚡ 생존권 변동! 현재 111위: ${safe.nickname}`);
-    }
+        ? "111위와 112위가 동점입니다."
 
-    previousCutlineUserId = safe.userId;
+        : `111위와 112위 차이: ${gap} UP`;
 }
 
-function showToast(message) {
-    const oldToast = document.querySelector(".toast");
-
-    if (oldToast) {
-        oldToast.remove();
-    }
-
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    toast.innerText = message;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 3500);
-}
+/* =========================
+   escape
+========================= */
 
 function escapeHtml(text) {
+
     return String(text || "")
+
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
@@ -470,10 +800,23 @@ function escapeHtml(text) {
         .replaceAll("'", "&#039;");
 }
 
-searchInput.addEventListener("input", renderRanking);
+/* =========================
+   검색
+========================= */
+
+searchInput.addEventListener(
+    "input",
+    renderRanking
+);
+
+/* =========================
+   시작
+========================= */
 
 loadRanking();
+
 setInterval(loadRanking, 10000);
+
 </script>
 
 </body>

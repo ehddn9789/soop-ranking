@@ -132,8 +132,7 @@ body::before {
 }
 
 .ranking-box {
-    max-height: 82vh;
-    overflow-y: auto;
+    overflow: visible;
     background:
         linear-gradient(180deg, rgba(28,10,45,0.95), rgba(10,4,20,0.96));
     border-radius: 30px;
@@ -616,4 +615,5 @@ body::before {
     .cutline-panel {
         cursor: pointer;
     }
+
 }
