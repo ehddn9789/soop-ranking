@@ -28,7 +28,7 @@
             >
         </div>
 
-        <div class="ranking-box">
+        <div class="ranking-box" id="rankingBox">
 
             <div class="tab-box">
                 <button id="rankingTab" class="tab-btn active-tab" type="button">
@@ -44,7 +44,7 @@
                 </button>
             </div>
 
-            <div class="cutline-panel" id="cutlinePanel">
+            <div class="cutline-panel" id="cutlinePanel" title="111등/112등으로 이동">
                 <div class="cutline-title">🔥 현재 생존 컷라인</div>
 
                 <div class="cutline-row">
@@ -108,6 +108,7 @@ const freepassTab = document.getElementById("freepassTab");
 const serverInfoTab = document.getElementById("serverInfoTab");
 
 const cutlinePanel = document.getElementById("cutlinePanel");
+const rankingBox = document.getElementById("rankingBox");
 const serverInfoView = document.getElementById("serverInfoView");
 
 const safeUser = document.getElementById("safeUser");
@@ -150,6 +151,18 @@ serverInfoTab.addEventListener("click", () => {
     currentView = "server";
     setActiveTab();
     renderRanking();
+});
+
+cutlinePanel.addEventListener("click", () => {
+    currentView = "ranking";
+    searchInput.value = "";
+
+    setActiveTab();
+    renderRanking();
+
+    setTimeout(() => {
+        scrollToCutline();
+    }, 150);
 });
 
 function setActiveTab() {
@@ -263,10 +276,12 @@ function renderRanking() {
         if (currentView === "ranking") {
             if (user.displayRank === CUTLINE_RANK) {
                 topClass += " cutline-safe-card";
+                card.id = "cutlineSafeCard";
             }
 
             if (user.displayRank === CUTLINE_RANK + 1) {
                 topClass += " cutline-danger-card";
+                card.id = "cutlineDangerCard";
             }
 
             if (
@@ -351,6 +366,38 @@ function renderRanking() {
 
         rankingList.appendChild(card);
     });
+}
+
+function scrollToCutline() {
+    const target =
+        document.getElementById("cutlineSafeCard") ||
+        document.getElementById("cutlineDangerCard");
+
+    if (!target) {
+        alert("아직 111등/112등 컷라인이 형성되지 않았습니다.");
+        return;
+    }
+
+    const rankingBoxRect = rankingBox.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+
+    const nextScrollTop =
+        rankingBox.scrollTop +
+        targetRect.top -
+        rankingBoxRect.top -
+        rankingBox.clientHeight / 2 +
+        target.clientHeight / 2;
+
+    rankingBox.scrollTo({
+        top: nextScrollTop,
+        behavior: "smooth"
+    });
+
+    target.classList.add("cutline-flash");
+
+    setTimeout(() => {
+        target.classList.remove("cutline-flash");
+    }, 1800);
 }
 
 function updateCutlinePanel(normalUsers) {

@@ -2,8 +2,11 @@
 const rankingList = document.getElementById("rankingList");
 const searchInput = document.getElementById("searchInput");
 const updateInfo = document.getElementById("updateInfo");
+
 const rankingTab = document.getElementById("rankingTab");
 const freepassTab = document.getElementById("freepassTab");
+const cutlinePanel = document.getElementById("cutlinePanel");
+const rankingBox = document.querySelector(".ranking-box");
 
 let rankingData = [];
 let currentView = "ranking";
@@ -24,19 +27,84 @@ const FREE_PASS_USERS = [
     "kymakyma"
 ];
 
-if (rankingTab && freepassTab) {
-    rankingTab.addEventListener("click", () => {
-        currentView = "ranking";
+function setRankingTab() {
+    currentView = "ranking";
+
+    if (rankingTab && freepassTab) {
         rankingTab.classList.add("active-tab");
         freepassTab.classList.remove("active-tab");
+    }
+}
+
+function setFreepassTab() {
+    currentView = "freepass";
+
+    if (rankingTab && freepassTab) {
+        freepassTab.classList.add("active-tab");
+        rankingTab.classList.remove("active-tab");
+    }
+}
+
+if (rankingTab && freepassTab) {
+    rankingTab.addEventListener("click", () => {
+        setRankingTab();
         renderRanking();
     });
 
     freepassTab.addEventListener("click", () => {
-        currentView = "freepass";
-        freepassTab.classList.add("active-tab");
-        rankingTab.classList.remove("active-tab");
+        setFreepassTab();
         renderRanking();
+    });
+}
+
+if (cutlinePanel) {
+    cutlinePanel.addEventListener("click", () => {
+        setRankingTab();
+
+        searchInput.value = "";
+
+        renderRanking();
+
+        setTimeout(() => {
+            scrollToCutline();
+        }, 100);
+    });
+}
+
+function scrollToCutline() {
+    const target =
+        document.querySelector(".cutline-safe-card") ||
+        document.querySelector(".cutline-danger-card");
+
+    if (!target) {
+        alert("아직 111등/112등 컷라인이 형성되지 않았습니다.");
+        return;
+    }
+
+    if (rankingBox) {
+        const targetOffset =
+            target.offsetTop -
+            rankingBox.offsetTop -
+            rankingBox.clientHeight / 2 +
+            target.clientHeight / 2;
+
+        rankingBox.scrollTo({
+            top: targetOffset,
+            behavior: "smooth"
+        });
+
+        target.classList.add("cutline-flash");
+
+        setTimeout(() => {
+            target.classList.remove("cutline-flash");
+        }, 1800);
+
+        return;
+    }
+
+    target.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
     });
 }
 
@@ -71,7 +139,9 @@ function renderRanking() {
     );
 
     const targetUsers =
-        currentView === "freepass" ? freepassUsers : normalUsers;
+        currentView === "freepass"
+            ? freepassUsers
+            : normalUsers;
 
     const reRankedUsers = targetUsers.map((user, index) => ({
         ...user,
@@ -149,7 +219,8 @@ function renderRanking() {
         let likeDiffText = "";
 
         if (user.likeDiff > 0) {
-            likeDiffText = `<div class="user-id">+${user.likeDiff} UP 증가</div>`;
+            likeDiffText =
+                `<div class="user-id">+${user.likeDiff} UP 증가</div>`;
         }
 
         let statusText = "";
@@ -158,19 +229,23 @@ function renderRanking() {
             currentView === "ranking" &&
             user.displayRank === CUTLINE_RANK
         ) {
-            statusText = `<div class="user-id">🟡 생존권 마지막 자리</div>`;
+            statusText =
+                `<div class="user-id">🟡 생존권 마지막 자리</div>`;
         }
 
         if (
             currentView === "ranking" &&
             user.displayRank === CUTLINE_RANK + 1
         ) {
-            statusText = `<div class="user-id">⚪ 탈락권 첫 번째</div>`;
+            statusText =
+                `<div class="user-id">⚪ 탈락권 첫 번째</div>`;
         }
 
         card.innerHTML = `
             <div class="rank-left">
-                <div class="rank-number">${user.displayRank}</div>
+                <div class="rank-number">
+                    ${user.displayRank}
+                </div>
 
                 <img
                     class="profile-image"
@@ -198,9 +273,15 @@ function renderRanking() {
             </div>
 
             <div class="rank-right">
-                <div class="up-count">👍 ${user.up}</div>
+                <div class="up-count">
+                    👍 ${user.up}
+                </div>
 
-                <a href="${user.link}" target="_blank" class="vote-btn">
+                <a
+                    href="${user.link}"
+                    target="_blank"
+                    class="vote-btn"
+                >
                     원본 보기
                 </a>
             </div>
