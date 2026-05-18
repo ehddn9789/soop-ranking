@@ -1,5 +1,3 @@
-<!-- public/index.html -->
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,332 +6,7 @@
 
 <title>챈나룽 실시간 UP 순위</title>
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
-    background:
-        radial-gradient(circle at top, #3a145f 0%, #140019 45%, #07000c 100%);
-    min-height: 100vh;
-    color: white;
-    overflow-x: hidden;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(180,0,255,0.18), transparent 30%),
-        radial-gradient(circle at 80% 70%, rgba(130,0,255,0.15), transparent 35%);
-    pointer-events: none;
-}
-
-.container {
-    width: 100%;
-    max-width: 1450px;
-    margin: auto;
-    padding: 40px 24px;
-}
-
-.header {
-    margin-bottom: 35px;
-}
-
-.title {
-    font-size: 48px;
-    font-weight: 900;
-    background: linear-gradient(90deg, #ffffff, #c67dff, #ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-}
-
-.sub {
-    margin-top: 14px;
-    text-align: center;
-    color: #cfc2da;
-    font-size: 18px;
-}
-
-.layout {
-    display: flex;
-    gap: 28px;
-    align-items: flex-start;
-}
-
-.left-panel {
-    flex: 1;
-}
-
-.poster-wrapper {
-    width: 100%;
-    max-height: 85vh;
-    overflow: hidden;
-    border-radius: 30px;
-    border: 1px solid rgba(180,0,255,0.25);
-    background: rgba(15,5,25,0.9);
-    box-shadow:
-        0 0 35px rgba(160,0,255,0.18),
-        inset 0 0 20px rgba(160,0,255,0.08);
-    margin-bottom: 25px;
-}
-
-.poster-image {
-    width: 100%;
-    max-height: 85vh;
-    object-fit: contain;
-    display: block;
-}
-
-.info-card {
-    background:
-        linear-gradient(180deg, rgba(33,10,48,0.9), rgba(15,5,25,0.95));
-    border: 1px solid rgba(183,0,255,0.25);
-    border-radius: 28px;
-    padding: 34px;
-    box-shadow:
-        0 0 25px rgba(155,0,255,0.18),
-        inset 0 0 20px rgba(140,0,255,0.06);
-}
-
-.info-card h2 {
-    font-size: 34px;
-    margin-bottom: 20px;
-    color: #dfb5ff;
-}
-
-.info-card p {
-    line-height: 1.9;
-    color: #d4c4df;
-    font-size: 17px;
-}
-
-.right-panel {
-    width: 470px;
-    position: sticky;
-    top: 24px;
-}
-
-.search-box {
-    margin-bottom: 18px;
-}
-
-.search-box input {
-    width: 100%;
-    background: rgba(20,8,35,0.95);
-    border: 1px solid rgba(170,0,255,0.25);
-    border-radius: 18px;
-    padding: 18px;
-    color: white;
-    font-size: 16px;
-    outline: none;
-}
-
-.ranking-box {
-    max-height: 82vh;
-    overflow-y: auto;
-    background:
-        linear-gradient(180deg, rgba(28,10,45,0.95), rgba(10,4,20,0.96));
-    border-radius: 30px;
-    padding: 26px;
-    border: 1px solid rgba(180,0,255,0.25);
-    box-shadow:
-        0 0 30px rgba(155,0,255,0.15),
-        inset 0 0 15px rgba(155,0,255,0.05);
-}
-
-.ranking-title {
-    text-align: center;
-    font-size: 30px;
-    font-weight: 800;
-    margin-bottom: 12px;
-    color: #efddff;
-}
-
-.update-info {
-    text-align: center;
-    color: #cfc2da;
-    font-size: 13px;
-    margin-bottom: 20px;
-}
-
-.rank-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px;
-    margin-bottom: 16px;
-    border-radius: 22px;
-    background:
-        linear-gradient(135deg, rgba(45,18,70,0.92), rgba(18,8,30,0.96));
-    border: 1px solid rgba(200,120,255,0.12);
-    transition: 0.25s;
-}
-
-.rank-card:hover {
-    transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 0 22px rgba(170,0,255,0.25);
-}
-
-.top1 {
-    border: 1px solid #ffe082;
-    box-shadow: 0 0 20px rgba(255,208,0,0.2);
-}
-
-.top2 {
-    border: 1px solid #d8d8d8;
-}
-
-.top3 {
-    border: 1px solid #c7834b;
-}
-
-.rank-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.rank-number {
-    width: 56px;
-    height: 56px;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background:
-        linear-gradient(135deg, #6b1ea9, #2a083d);
-    font-size: 22px;
-    font-weight: 800;
-    color: white;
-    flex-shrink: 0;
-}
-
-.profile-image {
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(200,120,255,0.5);
-    box-shadow: 0 0 16px rgba(170,0,255,0.28);
-    background: rgba(20,8,35,0.95);
-    flex-shrink: 0;
-}
-
-.nickname {
-    font-size: 19px;
-    font-weight: 700;
-    margin-bottom: 6px;
-}
-
-.user-id {
-    margin-top: 3px;
-    font-size: 13px;
-    color: #bfa6d9;
-}
-
-.movement {
-    margin-top: 6px;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.up {
-    color: #7dffb5;
-}
-
-.down {
-    color: #ff8585;
-}
-
-.same {
-    color: #c6b9d8;
-}
-
-.rank-right {
-    text-align: right;
-}
-
-.up-count {
-    font-size: 28px;
-    font-weight: 900;
-    color: #f2dcff;
-}
-
-.vote-btn {
-    display: inline-block;
-    margin-top: 10px;
-    text-decoration: none;
-    background:
-        linear-gradient(135deg, #9c27ff, #5b1392);
-    padding: 10px 16px;
-    border-radius: 14px;
-    color: white;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.empty {
-    color: #cfc2da;
-    text-align: center;
-    padding: 30px 0;
-}
-
-@media(max-width: 1100px) {
-    .layout {
-        flex-direction: column;
-    }
-
-    .right-panel {
-        width: 100%;
-        position: static;
-    }
-
-    .ranking-box {
-        max-height: none;
-    }
-}
-
-@media(max-width: 650px) {
-    .container {
-        padding: 26px 14px;
-    }
-
-    .title {
-        font-size: 34px;
-    }
-
-    .sub {
-        font-size: 15px;
-    }
-
-    .rank-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-    }
-
-    .rank-right {
-        width: 100%;
-        text-align: left;
-    }
-
-    .poster-wrapper {
-        max-height: 60vh;
-        border-radius: 22px;
-    }
-
-    .poster-image {
-        max-height: 60vh;
-    }
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -345,45 +18,78 @@ body::before {
         <div class="sub">SOOP 참가 신청 댓글 좋아요 순위를 실시간으로 확인하세요</div>
     </div>
 
-    <div class="layout">
+    <div class="main-panel">
 
-        <div class="left-panel">
-            <div class="poster-wrapper">
-                <img
-                    src="./images/channarung.png"
-                    class="poster-image"
-                    alt="챈나룽 서버 이미지"
-                >
-            </div>
-
-            <div class="info-card">
-                <h2>지옥의 초대장</h2>
-                <p>
-                    인세와 지옥의 경계가 무너진 순간,
-                    살아남기 위한 참가자들의 경쟁이 시작된다.
-                    <br><br>
-                    이 사이트는 SOOP 신청 댓글의 좋아요 수(UP)를
-                    실시간으로 집계하여 순위를 표시합니다.
-                    <br><br>
-                    참가자를 클릭하면 바로 SOOP 원본 게시글로 이동할 수 있습니다.
-                </p>
-            </div>
+        <div class="search-box">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="닉네임 / 아이디 검색..."
+            >
         </div>
 
-        <div class="right-panel">
+        <div class="ranking-box">
 
-            <div class="search-box">
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="닉네임 / 아이디 검색..."
-                >
+            <div class="tab-box">
+                <button id="rankingTab" class="tab-btn active-tab" type="button">
+                    👑 실시간 랭킹
+                </button>
+
+                <button id="freepassTab" class="tab-btn" type="button">
+                    🛡 프리패스 인원
+                </button>
+
+                <button id="serverInfoTab" class="tab-btn" type="button">
+                    📜 서버 정보
+                </button>
             </div>
 
-            <div class="ranking-box">
-                <div class="ranking-title">👑 실시간 랭킹</div>
-                <div class="update-info" id="updateInfo">불러오는 중...</div>
-                <div id="rankingList"></div>
+            <div class="cutline-panel" id="cutlinePanel">
+                <div class="cutline-title">🔥 현재 생존 컷라인</div>
+
+                <div class="cutline-row">
+                    <div class="safe-side">
+                        <span class="cut-label">111위 생존권</span>
+                        <span id="safeUser">불러오는 중...</span>
+                    </div>
+
+                    <div class="danger-side">
+                        <span class="cut-label">112위 탈락권</span>
+                        <span id="dangerUser">불러오는 중...</span>
+                    </div>
+                </div>
+
+                <div class="gap-text" id="gapText">
+                    UP 차이 계산 중...
+                </div>
+            </div>
+
+            <div class="update-info" id="updateInfo">불러오는 중...</div>
+
+            <div id="rankingList"></div>
+
+            <div id="serverInfoView" class="server-info-view" style="display:none;">
+                <div class="poster-wrapper">
+                    <img
+                        src="./images/channarung.png"
+                        class="poster-image"
+                        alt="챈나룽 서버 이미지"
+                    >
+                </div>
+
+                <div class="info-card">
+                    <h2>지옥의 초대장</h2>
+
+                    <p>
+                        인세와 지옥의 경계가 무너진 순간,
+                        살아남기 위한 참가자들의 경쟁이 시작된다.
+                        <br><br>
+                        이 사이트는 SOOP 신청 댓글의 좋아요 수(UP)를
+                        실시간으로 집계하여 순위를 표시합니다.
+                        <br><br>
+                        참가자를 클릭하면 바로 SOOP 원본 게시글로 이동할 수 있습니다.
+                    </p>
+                </div>
             </div>
 
         </div>
@@ -397,7 +103,60 @@ const rankingList = document.getElementById("rankingList");
 const searchInput = document.getElementById("searchInput");
 const updateInfo = document.getElementById("updateInfo");
 
+const rankingTab = document.getElementById("rankingTab");
+const freepassTab = document.getElementById("freepassTab");
+const serverInfoTab = document.getElementById("serverInfoTab");
+
+const cutlinePanel = document.getElementById("cutlinePanel");
+const serverInfoView = document.getElementById("serverInfoView");
+
+const safeUser = document.getElementById("safeUser");
+const dangerUser = document.getElementById("dangerUser");
+const gapText = document.getElementById("gapText");
+
 let rankingData = [];
+let currentView = "ranking";
+let previousCutlineUserId = null;
+
+const CUTLINE_RANK = 111;
+
+const FREE_PASS_USERS = [
+    "ldrboo",
+    "khm11903",
+    "qn308dud",
+    "iamquaddurup",
+    "dlghfjs",
+    "jrdart",
+    "roket0829",
+    "whatcherry4",
+    "chaenna02",
+    "singgyul",
+    "kymakyma"
+];
+
+rankingTab.addEventListener("click", () => {
+    currentView = "ranking";
+    setActiveTab();
+    renderRanking();
+});
+
+freepassTab.addEventListener("click", () => {
+    currentView = "freepass";
+    setActiveTab();
+    renderRanking();
+});
+
+serverInfoTab.addEventListener("click", () => {
+    currentView = "server";
+    setActiveTab();
+    renderRanking();
+});
+
+function setActiveTab() {
+    rankingTab.classList.toggle("active-tab", currentView === "ranking");
+    freepassTab.classList.toggle("active-tab", currentView === "freepass");
+    serverInfoTab.classList.toggle("active-tab", currentView === "server");
+}
 
 async function loadRanking() {
     try {
@@ -408,10 +167,6 @@ async function loadRanking() {
         }
 
         rankingData = await res.json();
-
-        updateInfo.innerText =
-            `총 ${rankingData.length}개 댓글 | 마지막 업데이트: ${new Date().toLocaleString("ko-KR")}`;
-
         renderRanking();
 
     } catch (err) {
@@ -425,25 +180,102 @@ function renderRanking() {
 
     const keyword = searchInput.value.toLowerCase();
 
-    const filtered = rankingData.filter(user =>
+    const freepassUsers = rankingData.filter(user =>
+        FREE_PASS_USERS.includes(String(user.userId || "").toLowerCase())
+    );
+
+    const normalUsers = rankingData.filter(user =>
+        !FREE_PASS_USERS.includes(String(user.userId || "").toLowerCase())
+    );
+
+    if (currentView === "server") {
+        searchInput.style.display = "none";
+        cutlinePanel.style.display = "none";
+        updateInfo.style.display = "none";
+        rankingList.style.display = "none";
+        serverInfoView.style.display = "block";
+        return;
+    }
+
+    searchInput.style.display = "block";
+    updateInfo.style.display = "block";
+    rankingList.style.display = "block";
+    serverInfoView.style.display = "none";
+
+    cutlinePanel.style.display =
+        currentView === "ranking"
+            ? "block"
+            : "none";
+
+    const targetUsers =
+        currentView === "freepass"
+            ? freepassUsers
+            : normalUsers;
+
+    const reRankedUsers = targetUsers.map((user, index) => ({
+        ...user,
+        displayRank: index + 1
+    }));
+
+    if (currentView === "ranking") {
+        updateCutlinePanel(normalUsers);
+    }
+
+    const filtered = reRankedUsers.filter(user =>
         String(user.nickname || "").toLowerCase().includes(keyword) ||
         String(user.userId || "").toLowerCase().includes(keyword)
     );
 
+    updateInfo.innerText =
+        currentView === "freepass"
+            ? `프리패스 인원 ${freepassUsers.length}명 | 마지막 업데이트: ${new Date().toLocaleString("ko-KR")}`
+            : `총 ${rankingData.length}개 댓글 | 랭킹 반영 ${normalUsers.length}명 | 프리패스 ${freepassUsers.length}명 제외 | 마지막 업데이트: ${new Date().toLocaleString("ko-KR")}`;
+
     if (filtered.length === 0) {
         rankingList.innerHTML =
-            `<div class="empty">검색 결과가 없습니다.</div>`;
+            `<div class="empty">${
+                currentView === "freepass"
+                    ? "프리패스 인원이 없습니다."
+                    : "검색 결과가 없습니다."
+            }</div>`;
         return;
     }
 
     filtered.forEach(user => {
+        if (
+            currentView === "ranking" &&
+            user.displayRank === CUTLINE_RANK + 1
+        ) {
+            const divider = document.createElement("div");
+            divider.className = "cutline-divider";
+            divider.innerText = "🔥 생존 마감선 — 111위까지 선정 🔥";
+            rankingList.appendChild(divider);
+        }
+
         const card = document.createElement("div");
 
         let topClass = "";
 
-        if (user.rank === 1) topClass = "top1";
-        if (user.rank === 2) topClass = "top2";
-        if (user.rank === 3) topClass = "top3";
+        if (user.displayRank === 1) topClass += " top1";
+        if (user.displayRank === 2) topClass += " top2";
+        if (user.displayRank === 3) topClass += " top3";
+
+        if (currentView === "ranking") {
+            if (user.displayRank === CUTLINE_RANK) {
+                topClass += " cutline-safe-card";
+            }
+
+            if (user.displayRank === CUTLINE_RANK + 1) {
+                topClass += " cutline-danger-card";
+            }
+
+            if (
+                user.displayRank >= CUTLINE_RANK - 3 &&
+                user.displayRank <= CUTLINE_RANK + 4
+            ) {
+                topClass += " cutline-zone";
+            }
+        }
 
         card.className = `rank-card ${topClass}`;
 
@@ -463,17 +295,30 @@ function renderRanking() {
             likeDiffText = `<div class="user-id">+${user.likeDiff} UP 증가</div>`;
         }
 
+        let statusText = "";
+
+        if (
+            currentView === "ranking" &&
+            user.displayRank === CUTLINE_RANK
+        ) {
+            statusText = `<div class="user-id">🟡 생존권 마지막 자리</div>`;
+        }
+
+        if (
+            currentView === "ranking" &&
+            user.displayRank === CUTLINE_RANK + 1
+        ) {
+            statusText = `<div class="user-id">⚪ 탈락권 첫 번째</div>`;
+        }
+
         card.innerHTML = `
             <div class="rank-left">
-
-                <div class="rank-number">
-                    ${user.rank}
-                </div>
+                <div class="rank-number">${user.displayRank}</div>
 
                 <img
                     class="profile-image"
                     src="${user.profileImage || ""}"
-                    alt="${escapeHtml(user.nickname)} 프로필"
+                    alt=""
                     onerror="this.style.display='none'"
                 >
 
@@ -490,21 +335,15 @@ function renderRanking() {
                         ${movementText}
                     </div>
 
+                    ${statusText}
                     ${likeDiffText}
                 </div>
-
             </div>
 
             <div class="rank-right">
-                <div class="up-count">
-                    👍 ${user.up}
-                </div>
+                <div class="up-count">👍 ${user.up}</div>
 
-                <a
-                    href="${user.link}"
-                    target="_blank"
-                    class="vote-btn"
-                >
+                <a href="${user.link}" target="_blank" class="vote-btn">
                     원본 보기
                 </a>
             </div>
@@ -512,6 +351,67 @@ function renderRanking() {
 
         rankingList.appendChild(card);
     });
+}
+
+function updateCutlinePanel(normalUsers) {
+    const ranked = normalUsers.map((user, index) => ({
+        ...user,
+        displayRank: index + 1
+    }));
+
+    const safe = ranked[CUTLINE_RANK - 1];
+    const danger = ranked[CUTLINE_RANK];
+
+    if (!safe) {
+        safeUser.innerText = "아직 111명 미만";
+        dangerUser.innerText = "-";
+        gapText.innerText = "아직 컷라인이 형성되지 않았습니다.";
+        return;
+    }
+
+    safeUser.innerText = `${safe.nickname} 👍 ${safe.up}`;
+
+    if (!danger) {
+        dangerUser.innerText = "112위 없음";
+        gapText.innerText = "현재 111명 이하라 전원 생존권입니다.";
+        return;
+    }
+
+    dangerUser.innerText = `${danger.nickname} 👍 ${danger.up}`;
+
+    const gap = safe.up - danger.up;
+
+    gapText.innerText =
+        gap === 0
+            ? "111위와 112위가 동점입니다. 순위 변동 가능성 매우 높음."
+            : `111위와 112위 차이: ${gap} UP`;
+
+    if (
+        previousCutlineUserId &&
+        previousCutlineUserId !== safe.userId
+    ) {
+        showToast(`⚡ 생존권 변동! 현재 111위: ${safe.nickname}`);
+    }
+
+    previousCutlineUserId = safe.userId;
+}
+
+function showToast(message) {
+    const oldToast = document.querySelector(".toast");
+
+    if (oldToast) {
+        oldToast.remove();
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3500);
 }
 
 function escapeHtml(text) {

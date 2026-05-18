@@ -1,248 +1,604 @@
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-/* =========================
-   랭킹 우측 영역
-========================= */
+body {
+    font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+    background:
+        radial-gradient(circle at top, #3a145f 0%, #140019 45%, #07000c 100%);
+    min-height: 100vh;
+    color: white;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(180,0,255,0.18), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(130,0,255,0.15), transparent 35%);
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1450px;
+    margin: auto;
+    padding: 40px 24px;
+}
+
+.header {
+    margin-bottom: 35px;
+}
+
+.title {
+    font-size: 48px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #ffffff, #c67dff, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+.sub {
+    margin-top: 14px;
+    text-align: center;
+    color: #cfc2da;
+    font-size: 18px;
+}
+
+.layout {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+}
+
+.left-panel {
+    flex: 1;
+}
+
+.poster-wrapper {
+    width: 100%;
+    max-height: 85vh;
+    overflow: hidden;
+    border-radius: 30px;
+    border: 1px solid rgba(180,0,255,0.25);
+    background: rgba(15,5,25,0.9);
+    box-shadow:
+        0 0 35px rgba(160,0,255,0.18),
+        inset 0 0 20px rgba(160,0,255,0.08);
+    backdrop-filter: blur(10px);
+    margin-bottom: 25px;
+}
+
+.poster-image {
+    width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    display: block;
+}
+
+.info-card {
+    background:
+        linear-gradient(180deg, rgba(33,10,48,0.9), rgba(15,5,25,0.95));
+    border: 1px solid rgba(183,0,255,0.25);
+    border-radius: 28px;
+    padding: 34px;
+    box-shadow:
+        0 0 25px rgba(155,0,255,0.18),
+        inset 0 0 20px rgba(140,0,255,0.06);
+}
+
+.info-card h2 {
+    font-size: 34px;
+    margin-bottom: 20px;
+    color: #dfb5ff;
+}
+
+.info-card p {
+    line-height: 1.9;
+    color: #d4c4df;
+    font-size: 17px;
+}
+
+.right-panel {
+    width: 520px;
+    position: sticky;
+    top: 24px;
+}
+
+.search-box {
+    margin-bottom: 18px;
+}
+
+.search-box input {
+    width: 100%;
+    background: rgba(20,8,35,0.95);
+    border: 1px solid rgba(170,0,255,0.25);
+    border-radius: 18px;
+    padding: 18px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.search-box input:focus {
+    border-color: #c26fff;
+    box-shadow: 0 0 15px rgba(170,0,255,0.25);
+}
+
+.ranking-box {
+    max-height: 82vh;
+    overflow-y: auto;
+    background:
+        linear-gradient(180deg, rgba(28,10,45,0.95), rgba(10,4,20,0.96));
+    border-radius: 30px;
+    padding: 22px;
+    border: 1px solid rgba(180,0,255,0.25);
+    box-shadow:
+        0 0 30px rgba(155,0,255,0.15),
+        inset 0 0 15px rgba(155,0,255,0.05);
+}
+
+.ranking-box::-webkit-scrollbar {
+    width: 10px;
+}
+
+.ranking-box::-webkit-scrollbar-thumb {
+    background: rgba(180,0,255,0.45);
+    border-radius: 999px;
+}
+
+/* 탭 버튼 */
+
+.tab-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(180,0,255,0.25);
+    background: rgba(20,8,35,0.95);
+    color: #bfa6d9;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tab-btn:hover {
+    box-shadow: 0 0 14px rgba(170,0,255,0.22);
+}
+
+.active-tab {
+    color: white;
+    background: linear-gradient(135deg, #9c27ff, #5b1392);
+    box-shadow: 0 0 18px rgba(170,0,255,0.35);
+}
+
+.update-info {
+    text-align: center;
+    color: #cfc2da;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.rank-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px;
+    margin-bottom: 16px;
+    border-radius: 22px;
+    background:
+        linear-gradient(135deg, rgba(45,18,70,0.92), rgba(18,8,30,0.96));
+    border: 1px solid rgba(200,120,255,0.12);
+    transition: 0.25s;
+}
+
+.rank-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 0 22px rgba(170,0,255,0.25);
+}
+
+.top1 {
+    border: 1px solid #ffe082;
+    box-shadow: 0 0 20px rgba(255,208,0,0.2);
+}
+
+.top2 {
+    border: 1px solid #d8d8d8;
+}
+
+.top3 {
+    border: 1px solid #c7834b;
+}
+
+.rank-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.rank-number {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        linear-gradient(135deg, #6b1ea9, #2a083d);
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+}
+
+.profile-image {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(200,120,255,0.5);
+    box-shadow: 0 0 16px rgba(170,0,255,0.28);
+    background: rgba(20,8,35,0.95);
+    flex-shrink: 0;
+}
+
+.nickname {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.user-id {
+    margin-top: 3px;
+    font-size: 13px;
+    color: #bfa6d9;
+}
+
+.movement {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.up {
+    color: #7dffb5;
+}
+
+.down {
+    color: #ff8585;
+}
+
+.same {
+    color: #c6b9d8;
+}
 
 .rank-right {
     text-align: right;
 }
 
-/* =========================
-   UP 수
-========================= */
-
 .up-count {
-
-    font-size: 30px;
-
-    font-weight: bold;
-
-    color: #ff4040;
-
-    text-shadow:
-        0 0 15px red;
+    font-size: 28px;
+    font-weight: 900;
+    color: #f2dcff;
 }
 
-/* =========================
-   순위 변동
-========================= */
-
-.rank-move {
-
-    margin-top: 8px;
-
-    font-size: 18px;
-}
-
-.rank-up {
-
-    color: #00ff99;
-
-    animation:
-        glowUp 1s infinite alternate;
-}
-
-.rank-down {
-
-    color: #ff5555;
-
-    animation:
-        glowDown 1s infinite alternate;
-}
-
-/* =========================
-   애니메이션
-========================= */
-
-@keyframes glowUp {
-
-    from {
-        text-shadow:
-            0 0 5px #00ff99;
-    }
-
-    to {
-        text-shadow:
-            0 0 20px #00ff99;
-    }
-}
-
-@keyframes glowDown {
-
-    from {
-        text-shadow:
-            0 0 5px red;
-    }
-
-    to {
-        text-shadow:
-            0 0 20px red;
-    }
-}
-
-/* =========================
-   카드 전체 클릭 영역
-========================= */
-
-.rank-link {
-
-    position: absolute;
-
-    inset: 0;
-}
-
-/* =========================
-   포스터 영역
-========================= */
-
-.poster-wrapper {
-
-    width: 100%;
-
-    max-height: 85vh;
-
-    overflow: hidden;
-
-    border-radius: 30px;
-
-    border:
-        1px solid rgba(180,0,255,0.25);
-
+.vote-btn {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
     background:
-        rgba(15,5,25,0.9);
-
-    box-shadow:
-        0 0 35px rgba(160,0,255,0.18),
-        inset 0 0 20px rgba(160,0,255,0.08);
-
-    backdrop-filter:
-        blur(10px);
-
-    margin-bottom: 25px;
+        linear-gradient(135deg, #9c27ff, #5b1392);
+    padding: 10px 16px;
+    border-radius: 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.2s;
 }
 
-.poster-image {
-
-    width: 100%;
-
-    max-height: 85vh;
-
-    object-fit: contain;
-
-    display: block;
+.vote-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(170,0,255,0.35);
 }
 
-/* =========================
-   공통 카드 라운드
-========================= */
+.empty {
+    color: #cfc2da;
+    text-align: center;
+    padding: 30px 0;
+}
 
-.rank-card,
-.hero-box,
-.ranking-section,
-.search-box,
-.info-box {
+/* 컷라인 패널 */
 
+.cutline-panel {
+    margin-bottom: 24px;
+    padding: 18px;
     border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(55,12,20,0.95), rgba(25,8,35,0.96));
+    border: 1px solid rgba(255,80,80,0.35);
+    box-shadow:
+        0 0 25px rgba(255,50,50,0.18),
+        inset 0 0 20px rgba(255,80,80,0.06);
 }
 
-/* =========================
-   모바일 반응형
-========================= */
+.cutline-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: #ffdddd;
+    margin-bottom: 14px;
+    text-shadow: 0 0 12px rgba(255,80,80,0.6);
+}
 
-@media (max-width: 768px) {
+.cutline-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
 
-    .hero-box {
+.safe-side,
+.danger-side {
+    padding: 14px;
+    border-radius: 18px;
+    text-align: center;
+}
 
-        padding: 30px 20px;
+.safe-side {
+    background: rgba(255,215,0,0.14);
+    border: 1px solid rgba(255,215,0,0.55);
+}
+
+.danger-side {
+    background: rgba(150,150,150,0.10);
+    border: 1px solid rgba(170,170,170,0.45);
+}
+
+.cut-label {
+    display: block;
+    font-size: 13px;
+    color: #cfc2da;
+    margin-bottom: 7px;
+}
+
+#safeUser {
+    color: #ffe082;
+    font-weight: 900;
+}
+
+#dangerUser {
+    color: #bdbdbd;
+    font-weight: 900;
+}
+
+.gap-text {
+    margin-top: 12px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+/* 111/112 경계선 */
+
+.cutline-divider {
+    margin: 46px 0;
+    padding: 22px;
+    border-radius: 24px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #ffe082;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,215,0,0.18),
+            rgba(255,120,0,0.10)
+        );
+    border: 2px solid rgba(255,215,0,0.45);
+    box-shadow:
+        0 0 30px rgba(255,215,0,0.28),
+        inset 0 0 15px rgba(255,215,0,0.08);
+    text-shadow: 0 0 12px rgba(255,215,0,0.65);
+}
+
+/* 111등: 노란색 생존권 */
+
+.cutline-safe-card {
+    margin-bottom: 34px !important;
+    border: 2px solid #ffe082 !important;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,215,0,0.20),
+            rgba(70,40,0,0.22)
+        ) !important;
+    box-shadow:
+        0 0 38px rgba(255,215,0,0.52),
+        inset 0 0 20px rgba(255,215,0,0.12) !important;
+    animation: safePulse 1.2s infinite alternate;
+}
+
+.cutline-safe-card .rank-number {
+    background:
+        linear-gradient(135deg, #ffd54f, #8a5a00);
+    color: #1b1200;
+}
+
+.cutline-safe-card .up-count,
+.cutline-safe-card .nickname {
+    color: #ffe082;
+}
+
+/* 112등: 회색 탈락권 */
+
+.cutline-danger-card {
+    margin-top: 34px !important;
+    border: 2px solid rgba(180,180,180,0.5) !important;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(120,120,120,0.14),
+            rgba(35,35,35,0.28)
+        ) !important;
+    box-shadow:
+        0 0 26px rgba(180,180,180,0.18),
+        inset 0 0 16px rgba(255,255,255,0.04) !important;
+    filter: grayscale(0.4);
+    animation: dangerShake 1s infinite alternate;
+}
+
+.cutline-danger-card .rank-number {
+    background:
+        linear-gradient(135deg, #9e9e9e, #303030);
+    color: #eeeeee;
+}
+
+.cutline-danger-card .up-count,
+.cutline-danger-card .nickname {
+    color: #cfcfcf;
+}
+
+/* 컷라인 근처 영역 */
+
+.cutline-zone {
+    box-shadow:
+        0 0 18px rgba(255,80,80,0.20),
+        inset 0 0 10px rgba(255,80,80,0.05);
+}
+
+/* 토스트 */
+
+.toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    padding: 16px 20px;
+    border-radius: 18px;
+    background: rgba(20,8,35,0.96);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 0 25px rgba(170,0,255,0.35);
+    color: white;
+    font-weight: 900;
+    animation: toastIn 0.3s ease-out;
+}
+
+@keyframes safePulse {
+    from {
+        transform: scale(1);
     }
 
-    .hero h1 {
+    to {
+        transform: scale(1.015);
+    }
+}
 
-        font-size: 52px;
+@keyframes dangerShake {
+    from {
+        transform: translateX(-1px);
     }
 
-    .sub-title {
+    to {
+        transform: translateX(1px);
+    }
+}
 
-        font-size: 18px;
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
 
-    .description {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        font-size: 16px;
+@media(max-width: 1100px) {
+    .layout {
+        flex-direction: column;
     }
 
-    .ranking-section {
+    .right-panel {
+        width: 100%;
+        position: static;
+    }
 
-        padding: 20px;
+    .ranking-box {
+        max-height: none;
+    }
+}
+
+@media(max-width: 650px) {
+    .container {
+        padding: 26px 14px;
+    }
+
+    .title {
+        font-size: 34px;
+    }
+
+    .sub {
+        font-size: 15px;
+    }
+
+    .tab-box {
+        flex-direction: column;
     }
 
     .rank-card {
-
         flex-direction: column;
-
         align-items: flex-start;
+        gap: 16px;
     }
 
     .rank-right {
-
         width: 100%;
-
         text-align: left;
     }
 
-    .up-count {
-
-        font-size: 26px;
-    }
-
-    .user-id {
-
-        margin-top: 3px;
-
-        font-size: 13px;
-
-        color: #bfa6d9;
-    }
-
-    .like-diff {
-
-        margin-top: 5px;
-
-        font-size: 13px;
-
-        color: #b985ff;
-
-        font-weight: 700;
-    }
-
     .poster-wrapper {
-
+        max-height: 60vh;
         border-radius: 22px;
     }
 
     .poster-image {
-
         max-height: 60vh;
     }
 
     .profile-image {
+        width: 54px;
+        height: 54px;
+    }
 
-        width: 64px;
-        height: 64px;
+    .cutline-row {
+        grid-template-columns: 1fr;
+    }
 
-        border-radius: 50%;
+    .cutline-divider {
+        margin: 34px 0;
+        font-size: 18px;
+    }
 
-        object-fit: cover;
+    .cutline-safe-card {
+        margin-bottom: 26px !important;
+    }
 
-        border:
-            2px solid rgba(180,0,255,0.5);
-
-        box-shadow:
-            0 0 15px rgba(170,0,255,0.25);
-
-        flex-shrink: 0;
+    .cutline-danger-card {
+        margin-top: 26px !important;
     }
 }
