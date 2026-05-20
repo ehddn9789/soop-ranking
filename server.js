@@ -12,6 +12,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const BJ_ID = "chaenna02";
 const POST_ID = "196058089";
 const POST_URL = `https://www.sooplive.com/station/${BJ_ID}/post/${POST_ID}`;
+const MAX_PAGES = 50;
 
 let previousRanks = {};
 let previousLikes = {};
@@ -20,24 +21,35 @@ let cachedRanking = [];
 let cachedAt = 0;
 let isFetching = false;
 
-const CACHE_TIME = 10000; // 10초 캐싱
+let cachedRanking = null;
+let lastCacheTime = 0;
+
+const CACHE_TIME = 15000; // 15초 캐싱
 
 async function fetchRankingFromSoop() {
   const firstUrl =
     `https://api-channel.sooplive.com/v1.1/channel/${BJ_ID}/post/${POST_ID}/comment?page=1&perPage=30`;
 
-  const firstResponse = await axios.get(firstUrl);
+  const firstResponse = await axios.get(firstUrl, {
+    timeout: 8000
+  });
 
   const lastPage = firstResponse.data.meta.lastPage;
   let allComments = [...firstResponse.data.data];
 
-  for (let page = 2; page <= lastPage; page++) {
-    const url =
-      `https://api-channel.sooplive.com/v1.1/channel/${BJ_ID}/post/${POST_ID}/comment?page=${page}&perPage=30`;
+  for (
+    let page = 2;
+    page <= Math.min(lastPage, MAX_PAGES);
+    page++
+  ) {
+      const url =
+        `https://api-channel.sooplive.com/v1.1/channel/${BJ_ID}/post/${POST_ID}/comment?page=${page}&perPage=30`;
 
-    const response = await axios.get(url);
-    allComments.push(...response.data.data);
-  }
+      const response = await axios.get(url, {
+        timeout: 8000
+      });
+      allComments.push(...response.data.data);
+    }
 
   allComments.sort((a, b) => b.likeCnt - a.likeCnt);
 
@@ -88,7 +100,7 @@ app.get("/api/ranking", async (req, res) => {
       return res.json(cachedRanking);
     }
 
-    if (isFetching) {
+    if (isFetching && cachedRanking.length > 0) {
       return res.json(cachedRanking);
     }
 
@@ -117,6 +129,6 @@ app.get("/api/ranking", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });

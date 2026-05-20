@@ -6,239 +6,310 @@
 
 body {
     font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
-    background:
-        radial-gradient(circle at top, #3a145f 0%, #140019 45%, #07000c 100%);
     min-height: 100vh;
-    color: white;
+    color: #f8f5ff;
+    background:
+        radial-gradient(circle at top, rgba(130, 50, 255, 0.22), transparent 28%),
+        linear-gradient(180deg, #08030f 0%, #14041f 52%, #050208 100%);
     overflow-x: hidden;
 }
 
 body::before {
-    content: '';
+    content: "";
     position: fixed;
     inset: 0;
     background:
-        radial-gradient(circle at 20% 20%, rgba(180,0,255,0.18), transparent 30%),
-        radial-gradient(circle at 80% 70%, rgba(130,0,255,0.15), transparent 35%);
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 42px 42px;
     pointer-events: none;
+    mask-image: linear-gradient(to bottom, black, transparent 80%);
 }
 
-.container {
-    width: 100%;
-    max-width: 1450px;
-    margin: auto;
-    padding: 40px 24px;
-}
-
-.header {
-    margin-bottom: 35px;
-}
-
-.title {
-    font-size: 48px;
-    font-weight: 900;
-    background: linear-gradient(90deg, #ffffff, #c67dff, #ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-}
-
-.sub {
-    margin-top: 14px;
-    text-align: center;
-    color: #cfc2da;
-    font-size: 18px;
-}
-
-.layout {
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
     display: flex;
-    gap: 28px;
-    align-items: flex-start;
-}
-
-.left-panel {
-    flex: 1;
-}
-
-.poster-wrapper {
-    width: 100%;
-    max-height: 85vh;
-    overflow: hidden;
-    border-radius: 30px;
-    border: 1px solid rgba(180,0,255,0.25);
-    background: rgba(15,5,25,0.9);
-    box-shadow:
-        0 0 35px rgba(160,0,255,0.18),
-        inset 0 0 20px rgba(160,0,255,0.08);
-    backdrop-filter: blur(10px);
-    margin-bottom: 25px;
-}
-
-.poster-image {
-    width: 100%;
-    max-height: 85vh;
-    object-fit: contain;
-    display: block;
-}
-
-.info-card {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background:
-        linear-gradient(180deg, rgba(33,10,48,0.9), rgba(15,5,25,0.95));
-    border: 1px solid rgba(183,0,255,0.25);
-    border-radius: 28px;
-    padding: 34px;
-    box-shadow:
-        0 0 25px rgba(155,0,255,0.18),
-        inset 0 0 20px rgba(140,0,255,0.06);
+        radial-gradient(circle at center, #211034 0%, #050208 70%);
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-.info-card h2 {
-    font-size: 34px;
-    margin-bottom: 20px;
-    color: #dfb5ff;
+.loading-logo {
+    font-size: clamp(44px, 8vw, 96px);
+    font-weight: 950;
+    letter-spacing: 8px;
+    color: white;
+    text-shadow:
+        0 0 20px rgba(180, 90, 255, 0.9),
+        0 0 60px rgba(120, 20, 255, 0.7);
 }
 
-.info-card p {
-    line-height: 1.9;
-    color: #d4c4df;
+.loading-text {
+    margin-top: 18px;
+    color: #cdb8ff;
+    font-size: 16px;
+}
+
+.hide-loading {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.page {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 42px 18px 80px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.hero-kicker {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(200, 150, 255, 0.28);
+    background: rgba(25, 8, 40, 0.75);
+    color: #cdb8ff;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 7vw, 78px);
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: -2px;
+    color: white;
+    text-shadow:
+        0 0 30px rgba(160, 70, 255, 0.55),
+        0 0 80px rgba(80, 20, 180, 0.4);
+}
+
+.hero p {
+    margin-top: 16px;
+    color: #c9b7dc;
     font-size: 17px;
 }
 
-.right-panel {
-    width: 520px;
-    position: sticky;
-    top: 24px;
-}
-
-.search-box {
-    margin-bottom: 18px;
-}
-
-.search-box input {
-    width: 100%;
-    background: rgba(20,8,35,0.95);
-    border: 1px solid rgba(170,0,255,0.25);
-    border-radius: 18px;
-    padding: 18px;
-    color: white;
-    font-size: 16px;
-    outline: none;
-    transition: 0.2s;
-}
-
-.search-box input:focus {
-    border-color: #c26fff;
-    box-shadow: 0 0 15px rgba(170,0,255,0.25);
-}
-
-.ranking-box {
-    overflow: visible;
+.board {
+    border: 1px solid rgba(180, 120, 255, 0.18);
+    border-radius: 34px;
+    padding: 24px;
     background:
-        linear-gradient(180deg, rgba(28,10,45,0.95), rgba(10,4,20,0.96));
-    border-radius: 30px;
-    padding: 22px;
-    border: 1px solid rgba(180,0,255,0.25);
+        linear-gradient(180deg, rgba(24, 9, 38, 0.92), rgba(10, 4, 18, 0.96));
     box-shadow:
-        0 0 30px rgba(155,0,255,0.15),
-        inset 0 0 15px rgba(155,0,255,0.05);
+        0 30px 80px rgba(0,0,0,0.4),
+        inset 0 0 24px rgba(160,80,255,0.06);
+    backdrop-filter: blur(14px);
 }
-
-.ranking-box::-webkit-scrollbar {
-    width: 10px;
-}
-
-.ranking-box::-webkit-scrollbar-thumb {
-    background: rgba(180,0,255,0.45);
-    border-radius: 999px;
-}
-
-/* 탭 버튼 */
 
 .tab-box {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 }
 
 .tab-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 16px;
-    border: 1px solid rgba(180,0,255,0.25);
-    background: rgba(20,8,35,0.95);
+    padding: 15px 12px;
+    border: 1px solid rgba(190, 130, 255, 0.22);
+    border-radius: 18px;
+    background: rgba(16, 6, 28, 0.92);
     color: #bfa6d9;
-    font-size: 16px;
-    font-weight: 800;
+    font-size: 15px;
+    font-weight: 900;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.22s ease;
 }
 
 .tab-btn:hover {
-    box-shadow: 0 0 14px rgba(170,0,255,0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 0 24px rgba(150, 80, 255, 0.25);
 }
 
 .active-tab {
     color: white;
-    background: linear-gradient(135deg, #9c27ff, #5b1392);
-    box-shadow: 0 0 18px rgba(170,0,255,0.35);
+    background:
+        linear-gradient(135deg, rgba(160,70,255,0.95), rgba(80,20,150,0.95));
+    box-shadow:
+        0 0 28px rgba(150, 70, 255, 0.45),
+        inset 0 0 12px rgba(255,255,255,0.08);
+}
+
+.search-box {
+    margin-bottom: 16px;
+}
+
+.search-box input {
+    width: 100%;
+    border: 1px solid rgba(190, 130, 255, 0.22);
+    border-radius: 20px;
+    padding: 17px 18px;
+    background: rgba(8, 3, 16, 0.92);
+    color: white;
+    outline: none;
+    font-size: 16px;
+}
+
+.search-box input:focus {
+    border-color: rgba(220, 190, 255, 0.8);
+    box-shadow: 0 0 22px rgba(150, 80, 255, 0.25);
+}
+
+.cutline-panel {
+    margin-bottom: 18px;
+    padding: 18px;
+    border-radius: 26px;
+    cursor: pointer;
+    background:
+        linear-gradient(135deg, rgba(60, 14, 22, 0.88), rgba(22, 8, 38, 0.92));
+    border: 1px solid rgba(255, 100, 90, 0.32);
+    box-shadow:
+        0 0 28px rgba(255,70,50,0.14),
+        inset 0 0 18px rgba(255,120,80,0.06);
+    transition: 0.22s ease;
+}
+
+.cutline-panel:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 36px rgba(255, 200, 80, 0.22),
+        inset 0 0 20px rgba(255,120,80,0.08);
+}
+
+.cutline-title {
+    text-align: center;
+    margin-bottom: 13px;
+    color: #ffe1df;
+    font-size: 21px;
+    font-weight: 950;
+    letter-spacing: 1px;
+}
+
+.cutline-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.cutline-card {
+    padding: 15px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.cutline-card span {
+    display: block;
+    margin-bottom: 8px;
+    color: #cbb7dd;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.cutline-card strong {
+    color: white;
+    font-size: 15px;
+}
+
+.cutline-card.safe {
+    border: 1px solid rgba(255, 220, 90, 0.5);
+    background: rgba(255, 210, 40, 0.12);
+}
+
+.cutline-card.safe strong {
+    color: #ffe082;
+}
+
+.cutline-card.danger {
+    border: 1px solid rgba(170, 170, 170, 0.42);
+    background: rgba(150, 150, 150, 0.1);
+}
+
+.cutline-card.danger strong {
+    color: #cfcfcf;
+}
+
+.gap-text {
+    margin-top: 12px;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
 }
 
 .update-info {
+    margin: 18px 0;
+    color: #bfa6d9;
     text-align: center;
-    color: #cfc2da;
     font-size: 13px;
-    margin-bottom: 20px;
+}
+
+.ranking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
 .rank-card {
+    position: relative;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    gap: 16px;
     padding: 18px;
-    margin-bottom: 16px;
-    border-radius: 22px;
+    border-radius: 24px;
     background:
-        linear-gradient(135deg, rgba(45,18,70,0.92), rgba(18,8,30,0.96));
-    border: 1px solid rgba(200,120,255,0.12);
-    transition: 0.25s;
+        linear-gradient(135deg, rgba(35, 14, 56, 0.94), rgba(12, 5, 22, 0.98));
+    border: 1px solid rgba(210, 160, 255, 0.12);
+    overflow: hidden;
+    transition: 0.22s ease;
 }
 
 .rank-card:hover {
-    transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 0 22px rgba(170,0,255,0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 0 26px rgba(160,80,255,0.26);
 }
 
-.top1 {
-    border: 1px solid #ffe082;
-    box-shadow: 0 0 20px rgba(255,208,0,0.2);
+.rank-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
 }
 
-.top2 {
-    border: 1px solid #d8d8d8;
-}
-
-.top3 {
-    border: 1px solid #c7834b;
+.rank-left,
+.rank-right {
+    position: relative;
+    z-index: 2;
 }
 
 .rank-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 15px;
 }
 
 .rank-number {
-    width: 56px;
-    height: 56px;
-    border-radius: 18px;
+    width: 58px;
+    height: 58px;
+    border-radius: 19px;
     display: flex;
     align-items: center;
     justify-content: center;
     background:
-        linear-gradient(135deg, #6b1ea9, #2a083d);
-    font-size: 22px;
-    font-weight: 800;
+        linear-gradient(135deg, #6d25ab, #26063d);
     color: white;
+    font-size: 23px;
+    font-weight: 950;
     flex-shrink: 0;
 }
 
@@ -247,27 +318,24 @@ body::before {
     height: 58px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid rgba(200,120,255,0.5);
-    box-shadow: 0 0 16px rgba(170,0,255,0.28);
-    background: rgba(20,8,35,0.95);
+    border: 2px solid rgba(210,160,255,0.45);
+    background: rgba(10,4,18,0.9);
     flex-shrink: 0;
 }
 
 .nickname {
     font-size: 19px;
-    font-weight: 700;
-    margin-bottom: 6px;
+    font-weight: 900;
+    color: white;
 }
 
-.user-id {
-    margin-top: 3px;
+.user-id,
+.movement,
+.like-diff,
+.status {
+    margin-top: 4px;
     font-size: 13px;
     color: #bfa6d9;
-}
-
-.movement {
-    margin-top: 6px;
-    font-size: 13px;
     font-weight: 700;
 }
 
@@ -283,202 +351,179 @@ body::before {
     color: #c6b9d8;
 }
 
+.safe-status {
+    color: #ffe082;
+}
+
+.danger-status {
+    color: #cfcfcf;
+}
+
 .rank-right {
+    min-width: 86px;
     text-align: right;
 }
 
+.up-label {
+    color: #bfa6d9;
+    font-size: 12px;
+    font-weight: 900;
+}
+
 .up-count {
-    font-size: 28px;
-    font-weight: 900;
-    color: #f2dcff;
+    margin-top: 2px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 950;
 }
 
-.vote-btn {
-    display: inline-block;
-    margin-top: 10px;
-    text-decoration: none;
-    background:
-        linear-gradient(135deg, #9c27ff, #5b1392);
-    padding: 10px 16px;
-    border-radius: 14px;
-    color: white;
-    font-size: 14px;
-    font-weight: 700;
-    transition: 0.2s;
+.top1 {
+    border-color: rgba(255, 224, 130, 0.6);
+    box-shadow: 0 0 24px rgba(255, 210, 70, 0.18);
 }
 
-.vote-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(170,0,255,0.35);
+.top2 {
+    border-color: rgba(220, 220, 220, 0.45);
 }
 
-.empty {
-    color: #cfc2da;
-    text-align: center;
-    padding: 30px 0;
+.top3 {
+    border-color: rgba(220, 145, 80, 0.45);
 }
-
-/* 컷라인 패널 */
-
-.cutline-panel {
-    margin-bottom: 24px;
-    padding: 18px;
-    border-radius: 24px;
-    background:
-        linear-gradient(135deg, rgba(55,12,20,0.95), rgba(25,8,35,0.96));
-    border: 1px solid rgba(255,80,80,0.35);
-    box-shadow:
-        0 0 25px rgba(255,50,50,0.18),
-        inset 0 0 20px rgba(255,80,80,0.06);
-}
-
-.cutline-title {
-    text-align: center;
-    font-size: 22px;
-    font-weight: 900;
-    color: #ffdddd;
-    margin-bottom: 14px;
-    text-shadow: 0 0 12px rgba(255,80,80,0.6);
-}
-
-.cutline-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.safe-side,
-.danger-side {
-    padding: 14px;
-    border-radius: 18px;
-    text-align: center;
-}
-
-.safe-side {
-    background: rgba(255,215,0,0.14);
-    border: 1px solid rgba(255,215,0,0.55);
-}
-
-.danger-side {
-    background: rgba(150,150,150,0.10);
-    border: 1px solid rgba(170,170,170,0.45);
-}
-
-.cut-label {
-    display: block;
-    font-size: 13px;
-    color: #cfc2da;
-    margin-bottom: 7px;
-}
-
-#safeUser {
-    color: #ffe082;
-    font-weight: 900;
-}
-
-#dangerUser {
-    color: #bdbdbd;
-    font-weight: 900;
-}
-
-.gap-text {
-    margin-top: 12px;
-    text-align: center;
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 800;
-}
-
-/* 111/112 경계선 */
 
 .cutline-divider {
-    margin: 46px 0;
-    padding: 22px;
+    margin: 36px 0;
+    padding: 20px;
     border-radius: 24px;
     text-align: center;
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 2px;
     color: #ffe082;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,215,0,0.18),
-            rgba(255,120,0,0.10)
-        );
-    border: 2px solid rgba(255,215,0,0.45);
-    box-shadow:
-        0 0 30px rgba(255,215,0,0.28),
-        inset 0 0 15px rgba(255,215,0,0.08);
-    text-shadow: 0 0 12px rgba(255,215,0,0.65);
+    font-size: 22px;
+    font-weight: 950;
+    letter-spacing: 3px;
+    border: 2px solid rgba(255,215,0,0.42);
+    background: rgba(255, 210, 40, 0.12);
+    box-shadow: 0 0 30px rgba(255,215,0,0.24);
 }
-
-/* 111등: 노란색 생존권 */
 
 .cutline-safe-card {
     margin-bottom: 34px !important;
     border: 2px solid #ffe082 !important;
     background:
-        linear-gradient(
-            135deg,
-            rgba(255,215,0,0.20),
-            rgba(70,40,0,0.22)
-        ) !important;
+        linear-gradient(135deg, rgba(255,215,0,0.22), rgba(60,38,0,0.25)) !important;
     box-shadow:
-        0 0 38px rgba(255,215,0,0.52),
+        0 0 40px rgba(255,215,0,0.48),
         inset 0 0 20px rgba(255,215,0,0.12) !important;
     animation: safePulse 1.2s infinite alternate;
 }
 
 .cutline-safe-card .rank-number {
-    background:
-        linear-gradient(135deg, #ffd54f, #8a5a00);
+    background: linear-gradient(135deg, #ffd54f, #8a5a00);
     color: #1b1200;
 }
 
-.cutline-safe-card .up-count,
-.cutline-safe-card .nickname {
+.cutline-safe-card .nickname,
+.cutline-safe-card .up-count {
     color: #ffe082;
 }
-
-/* 112등: 회색 탈락권 */
 
 .cutline-danger-card {
     margin-top: 34px !important;
     border: 2px solid rgba(180,180,180,0.5) !important;
     background:
-        linear-gradient(
-            135deg,
-            rgba(120,120,120,0.14),
-            rgba(35,35,35,0.28)
-        ) !important;
-    box-shadow:
-        0 0 26px rgba(180,180,180,0.18),
-        inset 0 0 16px rgba(255,255,255,0.04) !important;
-    filter: grayscale(0.4);
+        linear-gradient(135deg, rgba(110,110,110,0.14), rgba(30,30,30,0.28)) !important;
+    filter: grayscale(0.35);
     animation: dangerShake 1s infinite alternate;
 }
 
 .cutline-danger-card .rank-number {
-    background:
-        linear-gradient(135deg, #9e9e9e, #303030);
-    color: #eeeeee;
+    background: linear-gradient(135deg, #9e9e9e, #303030);
+    color: #eee;
 }
 
-.cutline-danger-card .up-count,
-.cutline-danger-card .nickname {
+.cutline-danger-card .nickname,
+.cutline-danger-card .up-count {
     color: #cfcfcf;
 }
 
-/* 컷라인 근처 영역 */
-
 .cutline-zone {
     box-shadow:
-        0 0 18px rgba(255,80,80,0.20),
-        inset 0 0 10px rgba(255,80,80,0.05);
+        0 0 18px rgba(255,80,80,0.16),
+        inset 0 0 10px rgba(255,80,80,0.04);
 }
 
-/* 토스트 */
+.cutline-flash {
+    outline: 4px solid rgba(255,255,255,0.85);
+    animation: cutlineFlash 0.35s alternate 5;
+}
+
+.empty {
+    padding: 44px 0;
+    text-align: center;
+    color: #bfa6d9;
+}
+
+.server-info-view {
+    margin-top: 12px;
+}
+
+.poster-wrapper {
+    width: 100%;
+    max-width: 100%;
+    max-height: 70vh;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.poster-image {
+    width: 100%;
+    height: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    display: block;
+}
+
+.top-button {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    width: 62px;
+    height: 62px;
+    border: none;
+    border-radius: 50%;
+    background: #000;
+    color: white;
+    cursor: pointer;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition:
+        opacity 0.25s,
+        transform 0.25s,
+        background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.top-button::before {
+    content: "↑";
+    font-size: 30px;
+    font-weight: 900;
+    transform: translateY(-1px);
+}
+
+.top-button:hover {
+    background: #151515;
+    transform: translateY(0) scale(1.06);
+}
+
+.show-top-button {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
 
 .toast {
     position: fixed;
@@ -492,268 +537,175 @@ body::before {
     box-shadow: 0 0 25px rgba(170,0,255,0.35);
     color: white;
     font-weight: 900;
-    animation: toastIn 0.3s ease-out;
 }
 
 @keyframes safePulse {
-    from {
-        transform: scale(1);
-    }
-
-    to {
-        transform: scale(1.015);
-    }
+    from { transform: scale(1); }
+    to { transform: scale(1.015); }
 }
 
 @keyframes dangerShake {
+    from { transform: translateX(-1px); }
+    to { transform: translateX(1px); }
+}
+
+@keyframes cutlineFlash {
     from {
-        transform: translateX(-1px);
+        box-shadow:
+            0 0 20px rgba(255,255,255,0.3),
+            0 0 40px rgba(255,215,0,0.35);
     }
 
     to {
-        transform: translateX(1px);
-    }
-}
-
-@keyframes toastIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media(max-width: 1100px) {
-    .layout {
-        flex-direction: column;
-    }
-
-    .right-panel {
-        width: 100%;
-        position: static;
-    }
-
-    .ranking-box {
-        max-height: none;
+        box-shadow:
+            0 0 35px rgba(255,255,255,0.9),
+            0 0 70px rgba(255,215,0,0.75);
     }
 }
 
 @media(max-width: 650px) {
-    .container {
-        padding: 26px 14px;
+
+    .page {
+        padding: 30px 12px 70px;
     }
 
-    .title {
-        font-size: 34px;
+    .board {
+        padding: 16px;
+        border-radius: 26px;
     }
 
-    .sub {
-        font-size: 15px;
-    }
-
-    .tab-box {
-        flex-direction: column;
-    }
-
-    .rank-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-    }
-
-    .rank-right {
-        width: 100%;
-        text-align: left;
-    }
-
-    .poster-wrapper {
-        max-height: 60vh;
-        border-radius: 22px;
-    }
-
-    .poster-image {
-        max-height: 60vh;
-    }
-
-    .profile-image {
-        width: 54px;
-        height: 54px;
-    }
-
-    .cutline-row {
+    .tab-box,
+    .cutline-grid {
         grid-template-columns: 1fr;
     }
 
-    .cutline-divider {
-        margin: 34px 0;
-        font-size: 18px;
+    .hero h1 {
+        letter-spacing: -1px;
     }
-
-    .cutline-safe-card {
-        margin-bottom: 26px !important;
-    }
-
-    .cutline-danger-card {
-        margin-top: 26px !important;
-    }
-
-    /* =========================
-    컷라인 클릭 효과
-    ========================= */
-
-    .cutline-panel {
-
-        cursor: pointer;
-
-        transition:
-            transform 0.2s,
-            box-shadow 0.2s;
-    }
-
-    .cutline-panel:hover {
-
-        transform: translateY(-2px);
-
-        box-shadow:
-            0 0 35px rgba(255,215,0,0.28),
-            inset 0 0 20px rgba(255,80,80,0.06);
-    }
-
-    /* =========================
-    컷라인 이동 강조
-    ========================= */
-
-    .cutline-flash {
-
-        outline: 4px solid rgba(255,255,255,0.85);
-
-        animation:
-            cutlineFlash 0.35s alternate 5;
-    }   
-
-    @keyframes cutlineFlash {
-
-        from {
-
-            box-shadow:
-                0 0 20px rgba(255,255,255,0.3),
-                0 0 40px rgba(255,215,0,0.35);
-        }
-
-        to {
-
-            box-shadow:
-                0 0 35px rgba(255,255,255,0.9),
-                0 0 70px rgba(255,215,0,0.75);
-        }
-    }
-
-    /* =========================
-    맨 위 버튼
-    ========================= */
-
-    /* =========================
-   맨 위 버튼
-========================= */
 
     .top-button {
+        width: 56px;
+        height: 56px;
+        left: 16px;
+        bottom: 16px;
+    }
 
-        position: fixed;
+    /* 모바일 랭킹 카드 */
 
-        left: 24px;
+    .rank-card {
 
-        bottom: 24px;
-
-        width: 62px;
-
-        height: 62px;
-
-        border: none;
-
-        border-radius: 50%;
-
-        background: #000000;
-
-        color: white;
-
-        font-size: 30px;
-
-        font-weight: bold;
-
-        cursor: pointer;
-
-        z-index: 99999;
-
-        opacity: 0;
-
-        pointer-events: none;
-
-        transform:
-            translateY(20px);
-
-        transition:
-            opacity 0.25s,
-            transform 0.25s,
-            background 0.2s;
-
-        display: flex;
+        flex-direction: row;
 
         align-items: center;
 
-        justify-content: center;
+        justify-content: space-between;
 
-        box-shadow:
-            0 6px 18px rgba(0,0,0,0.35);
+        gap: 10px;
     }
 
-    .top-button:hover {
+    .rank-left {
 
-        background: #151515;
+        min-width: 0;
 
-        transform:
-            translateY(0)
-            scale(1.06);
+        flex: 1;
     }
 
-    .show-top-button {
+    .user-text {
 
-        opacity: 1;
-
-        pointer-events: auto;
-
-        transform: translateY(0);
+        min-width: 0;
     }
 
-/* 화살표 */
+    .nickname {
 
-    .top-button::before {
+        font-size: 16px;
 
-        content: "↑";
+        white-space: nowrap;
 
-        transform:
-            translateY(-1px);
+        overflow: hidden;
+
+        text-overflow: ellipsis;
     }
 
-/* 모바일 */
+    .user-id,
+    .movement,
+    .like-diff,
+    .status {
 
-    @media(max-width: 650px) {
-
-        .top-button {
-
-            width: 56px;
-
-            height: 56px;
-
-            left: 16px;
-
-            bottom: 16px;
-
-            font-size: 26px;
-        }
+        display: none;
     }
 
+    .rank-right {
+
+        min-width: auto;
+
+        text-align: right;
+
+        flex-shrink: 0;
+    }
+
+    .up-label {
+
+        display: none;
+    }
+
+    .up-count {
+
+        font-size: 22px;
+
+        margin-top: 0;
+    }
+
+    .rank-number {
+
+        width: 44px;
+
+        height: 44px;
+
+        font-size: 18px;
+
+        border-radius: 14px;
+    }
+
+    .profile-image {
+
+        width: 42px;
+
+        height: 42px;
+    }
+}
+
+.rank-card {
+    will-change: transform;
+}
+
+.rank-swap-up {
+    animation: swapUpRed 0.9s ease;
+}
+
+.rank-swap-down {
+    animation: swapDownBlue 0.9s ease;
+}
+
+@keyframes swapUpRed {
+    0% {
+        background: rgba(255, 60, 60, 0.35);
+        box-shadow: 0 0 35px rgba(255, 60, 60, 0.55);
+    }
+
+    100% {
+        background:
+            linear-gradient(135deg, rgba(35, 14, 56, 0.94), rgba(12, 5, 22, 0.98));
+    }
+}
+
+@keyframes swapDownBlue {
+    0% {
+        background: rgba(60, 140, 255, 0.35);
+        box-shadow: 0 0 35px rgba(60, 140, 255, 0.55);
+    }
+
+    100% {
+        background:
+            linear-gradient(135deg, rgba(35, 14, 56, 0.94), rgba(12, 5, 22, 0.98));
+    }
 }

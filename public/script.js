@@ -10,6 +10,7 @@ const rankingBox = document.querySelector(".ranking-box");
 
 let rankingData = [];
 let currentView = "ranking";
+let previousStateMap = new Map();
 
 const CUTLINE_RANK = 111;
 
@@ -109,23 +110,125 @@ function scrollToCutline() {
 }
 
 async function loadRanking() {
+
     try {
-        const res = await fetch("/api/ranking");
+
+        const res =
+            await fetch("/api/ranking");
 
         if (!res.ok) {
+
             throw new Error("API 응답 실패");
         }
 
-        rankingData = await res.json();
+        const newData =
+            await res.json();
+
+        rankingData = newData.map((user, index) => {
+
+            const key =
+
+                String(
+                    user.commentNo
+                    ||
+                    user.userId
+                    ||
+                    user.nickname
+                );
+
+            const prev =
+                previousStateMap.get(key);
+
+            let upDiff = 0;
+
+            let rankMove = "same";
+
+            let rankMoveCount = 0;
+
+            if (prev) {
+
+                upDiff =
+
+                    Number(user.up || 0)
+
+                    -
+
+                    Number(prev.up || 0);
+
+                if (user.rank < prev.rank) {
+
+                    rankMove = "up";
+
+                    rankMoveCount =
+                        prev.rank - user.rank;
+                }
+
+                else if (user.rank > prev.rank) {
+
+                    rankMove = "down";
+
+                    rankMoveCount =
+                        user.rank - prev.rank;
+                }
+            }
+
+            return {
+
+                ...user,
+
+                upDiff,
+
+                rankMove,
+
+                rankMoveCount
+            };
+        });
+
+        previousStateMap.clear();
+
+        rankingData.forEach(user => {
+
+            const key =
+
+                String(
+                    user.commentNo
+                    ||
+                    user.userId
+                    ||
+                    user.nickname
+                );
+
+            previousStateMap.set(key, {
+
+                up: user.up,
+
+                rank: user.rank
+            });
+        });
+
         renderRanking();
 
-    } catch (err) {
+    }
+
+    catch (err) {
+
         console.error(err);
-        updateInfo.innerText = "실시간 랭킹을 불러오지 못했습니다.";
+
+        updateInfo.innerText =
+            "실시간 랭킹을 불러오지 못했습니다.";
     }
 }
 
 function renderRanking() {
+    const oldPositions = new Map();
+
+    document.querySelectorAll(".rank-card").forEach(card => {
+        oldPositions.set(
+            card.dataset.key,
+            card.getBoundingClientRect()
+        );
+    });
+
     rankingList.innerHTML = "";
 
     const keyword = searchInput.value.toLowerCase();
@@ -204,7 +307,27 @@ function renderRanking() {
             }
         }
 
+        if (user.rankMove === "up") {
+            topClass += " rank-swap-up";
+        }
+
+        if (user.rankMove === "down") {
+            topClass += " rank-swap-down";
+        }
+
         card.className = `rank-card ${topClass}`;
+
+        const cardKey =
+
+            String(
+                user.commentNo
+                ||
+                user.userId
+                ||
+                user.nickname
+            );
+
+        card.dataset.key = cardKey;
 
         let movementText = "─ 유지";
 
@@ -218,9 +341,12 @@ function renderRanking() {
 
         let likeDiffText = "";
 
-        if (user.likeDiff > 0) {
-            likeDiffText =
-                `<div class="user-id">+${user.likeDiff} UP 증가</div>`;
+        if (user.upDiff > 0) {
+            likeDiffText = `<div class="like-diff up-plus">+${user.upDiff} UP 증가</div>`;
+        }
+
+        if (user.upDiff < 0) {
+            likeDiffText = `<div class="like-diff up-minus">${user.upDiff} UP 감소</div>`;
         }
 
         let statusText = "";
@@ -288,6 +414,32 @@ function renderRanking() {
         `;
 
         rankingList.appendChild(card);
+
+        const oldRect = oldPositions.get(card.dataset.key);
+
+        if (oldRect) {
+            const newRect = card.getBoundingClientRect();
+
+            const deltaY = oldRect.top - newRect.top;
+
+            if (deltaY !== 0) {
+                card.style.transform = `translateY(${deltaY}px)`;
+                card.style.transition = "transform 0s";
+
+                requestAnimationFrame(() => {
+                    card.style.transform = "";
+                    card.style.transition = "transform 0.8s ease";
+                });
+            }
+        }
+
+        if (user.rankMove === "up") {
+            card.classList.add("rank-swap-up");
+        }
+
+        if (user.rankMove === "down") {
+            card.classList.add("rank-swap-down");
+        }
     });
 }
 
